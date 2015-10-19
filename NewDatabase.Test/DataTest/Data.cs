@@ -10,10 +10,12 @@ namespace NewDatabase.Test.DataTest
     public class Data 
     {
         public Dictionary<Guid, Well> Wells { get; set; }
+        public Dictionary<Guid, Geometry> Geometries{ get; set; }
 
         public Data()
         {
             Wells = new Dictionary<Guid, Well>();
+            Geometries = new Dictionary<Guid, Geometry>();
         }
     }
 }

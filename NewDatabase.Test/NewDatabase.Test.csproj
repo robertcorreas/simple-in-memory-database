@@ -58,8 +58,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CascateDeletion\OneToOneCascateDeletionTest.cs" />
     <Compile Include="DataTest\Data.cs" />
+    <Compile Include="EntitiesTest\Geometry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelationTest\OneToOneTest\OneToOneInsertTest.cs" />
+    <Compile Include="RelationTest\OneToOneTest\WellAndGeometryTest.cs" />
     <Compile Include="TableTest\TableCreationTests.cs" />
     <Compile Include="EntitiesTest\Well.cs" />
     <Compile Include="TableTest\TableInsertion.cs" />
