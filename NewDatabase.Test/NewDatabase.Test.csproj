@@ -58,8 +58,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTest\Data.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableTest\TableCreationTests.cs" />
+    <Compile Include="EntitiesTest\Well.cs" />
+    <Compile Include="TableTest\TableInsertion.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NewDatabase.Core\NewDatabase.Core.csproj">
@@ -70,7 +73,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
