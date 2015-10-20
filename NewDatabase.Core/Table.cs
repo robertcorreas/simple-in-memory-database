@@ -1,47 +1,46 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Nuclex.Cloning;
 
 namespace NewDatabase.Core
 {
     public class Table<T> where T : Entity
     {
-        public Func<T, Guid> PrimaryKey { get; private set; }
+        private readonly Index _index;
+        private readonly Relation _relation;
+        private readonly Dictionary<Guid, T> _tuplas;
+
+        public Table(Dictionary<Guid, T> tuplas, Expression<Func<T, Guid>> primaryKey, Relation relation = null,
+            Index index = null)
+        {
+            _primaryKey = primaryKey.Compile();
+            _tuplas = tuplas;
+            _index = index ?? new Index();
+            _relation = relation ?? new Relation();
+        }
+
+        private readonly Func<T, Guid> _primaryKey;
 
         public int Count
         {
             get { return _tuplas.Count; }
         }
 
-        private readonly Dictionary<Guid, T> _tuplas;
-        private readonly Index _index;
-        private readonly Relation _relation;
-
-        public Table(Dictionary<Guid, T> tuplas, Expression<Func<T, Guid>> primaryKey, Relation relation = null, Index index = null)
-        {
-            PrimaryKey = primaryKey.Compile();
-            _tuplas = tuplas;
-            _index = index ?? new Index();
-            _relation = relation ?? new Relation();
-        }
-
         public void Insert(T entity)
         {
-            if (_tuplas.ContainsKey(PrimaryKey(entity)))
+            if (_tuplas.ContainsKey(_primaryKey(entity)))
                 throw new ArgumentException("Already exist an entity with this id");
 
-            var type = this.GetType();
+            var type = GetType();
 
             var relationProperties = _relation.Get(type);
 
             foreach (var relationPropertie in relationProperties)
             {
-                if (relationPropertie.TableWithDependency == type && relationPropertie.RelationType != RelationType.ManyToMany)
+                if (relationPropertie.TableWithDependency == type &&
+                    relationPropertie.RelationType != RelationType.ManyToMany)
                 {
                     var foreignKey = relationPropertie.ForeignKey(entity);
 
@@ -52,27 +51,27 @@ namespace NewDatabase.Core
                     var foreignKey1 = relationPropertie.ForeignKey1(entity);
                     var foreignKey2 = relationPropertie.ForeignKey2(entity);
 
-                    if (!(_index.Contains(foreignKey1) && _index.Contains(foreignKey2))) throw new InvalidOperationException("Invalid FK");
+                    if (!(_index.Contains(foreignKey1) && _index.Contains(foreignKey2)))
+                        throw new InvalidOperationException("Invalid FK");
                 }
             }
 
 
             var entityCopy = ExpressionTreeCloner.DeepFieldClone(entity);
 
-            _tuplas.Add(PrimaryKey(entity), entityCopy);
-            _index.CreateIndex(PrimaryKey(entityCopy));
+            _tuplas.Add(_primaryKey(entity), entityCopy);
+            _index.CreateIndex(_primaryKey(entityCopy));
         }
 
         public T Get(Guid primaryKey)
         {
-            return _tuplas[primaryKey]; //TODO: test get with invalid primaryKey
-
+            return   ExpressionTreeCloner.DeepFieldClone(_tuplas[primaryKey]);
         }
 
         public void Delete(Guid primaryKey)
         {
             var entity = _tuplas[primaryKey];
-            var tableType = this.GetType();
+            var tableType = GetType();
 
             var relationProperties = _relation.Get(tableType);
 
@@ -82,7 +81,8 @@ namespace NewDatabase.Core
                 {
                     if (relationPropertie.TableWithDependency == tableType)
                     {
-                        relationPropertie.DeleteOperation(relationPropertie.TableDependency, relationPropertie.ForeignKey(entity));
+                        relationPropertie.DeleteOperation(relationPropertie.TableDependency,
+                            relationPropertie.ForeignKey(entity));
                     }
                 }
                 else if (relationPropertie.RelationType == RelationType.OneToMany)
@@ -94,9 +94,7 @@ namespace NewDatabase.Core
                 }
                 else
                 {
-
                     relationPropertie.DeleteOperation(tableType, primaryKey);
-
                 }
             }
 
@@ -106,14 +104,14 @@ namespace NewDatabase.Core
 
         public void Delete(T entity)
         {
-            var primaryKey = PrimaryKey(entity);
+            var primaryKey = _primaryKey(entity);
 
             Delete(primaryKey);
         }
 
         public List<T> GetAll()
         {
-            return _tuplas.Values.Select(ExpressionTreeCloner.DeepFieldClone).ToList();
+            return _tuplas.Values.Select<T, T>(ExpressionTreeCloner.DeepFieldClone).ToList();
         }
 
         public void Delete(Func<T, bool> query)

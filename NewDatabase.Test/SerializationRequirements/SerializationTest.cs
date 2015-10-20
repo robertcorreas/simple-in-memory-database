@@ -3,7 +3,7 @@ using NewDatabase.Test.EntitiesTest;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace NewDatabase.Test.SerializationRequiriments
+namespace NewDatabase.Test.SerializationRequirements
 {
     public class SerializationTest
     {
