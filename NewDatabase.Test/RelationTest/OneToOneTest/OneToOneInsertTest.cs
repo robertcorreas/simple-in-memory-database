@@ -13,11 +13,11 @@ namespace NewDatabase.Test.RelationTest.OneToOneTest
 {
     public class OneToOneInsertTest
     {
-        private readonly Data _data;
+        private readonly DataTest.DataTest _dataTest;
 
         public OneToOneInsertTest()
         {
-            _data = new Data();
+            _dataTest = new DataTest.DataTest();
         }
 
         [Fact]
@@ -26,8 +26,8 @@ namespace NewDatabase.Test.RelationTest.OneToOneTest
             var relation = new Relation();
             var index = new Index();
 
-            var wellTable = new Table<Well>(tuplas: _data.Wells, primaryKey: w => w.Id, relation: relation, index: index);
-            var geometryTable = new Table<Geometry>(tuplas: _data.Geometries, primaryKey: g => g.Id, relation: relation, index: index);
+            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id, relation: relation, index: index);
+            var geometryTable = new Table<Geometry>(tuplas: _dataTest.Geometries, primaryKey: g => g.Id, relation: relation, index: index);
 
             relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
@@ -49,8 +49,8 @@ namespace NewDatabase.Test.RelationTest.OneToOneTest
             var relation = new Relation();
             var index = new Index();
 
-            var wellTable = new Table<Well>(tuplas: _data.Wells, primaryKey: w => w.Id, relation: relation, index: index);
-            var geometryTable = new Table<Geometry>(tuplas: _data.Geometries, primaryKey: g => g.Id, relation: relation, index: index);
+            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id, relation: relation, index: index);
+            var geometryTable = new Table<Geometry>(tuplas: _dataTest.Geometries, primaryKey: g => g.Id, relation: relation, index: index);
 
             relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 

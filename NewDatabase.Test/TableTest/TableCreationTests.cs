@@ -12,16 +12,16 @@ namespace NewDatabase.Test.TableTest
 {
     public class TableCreationTests
     {
-        private readonly Data _data;
+        private readonly DataTest.DataTest _dataTest;
         public TableCreationTests()
         {
-            _data = new Data();
+            _dataTest = new DataTest.DataTest();
         }
 
         [Fact]
         public void ShouldCreateWellTableWithPrimaryKey()
         {
-            var wellTable = new Table<Well>(tuplas: _data.Wells,primaryKey: w => w.Id);
+            var wellTable = new Table<Well>(tuplas: _dataTest.Wells,primaryKey: w => w.Id);
 
             Assert.NotNull(wellTable);
         }

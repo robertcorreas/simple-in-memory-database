@@ -6,12 +6,7 @@ using System.Threading.Tasks;
 
 namespace NewDatabase.Core
 {
-    public class Entity
+    public class Data
     {
-        public Guid Id { get; set; }
-        public Entity()
-        {
-            Id = Guid.NewGuid();
-        }
     }
 }

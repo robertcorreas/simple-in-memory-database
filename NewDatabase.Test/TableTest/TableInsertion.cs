@@ -12,17 +12,17 @@ namespace NewDatabase.Test.TableTest
 {
     public class TableInsertion
     {
-        private readonly Data _data;
+        private readonly DataTest.DataTest _dataTest;
 
         public TableInsertion()
         {
-            _data = new Data();
+            _dataTest = new DataTest.DataTest();
         }
 
         [Fact]
         public void ShouldInsertWellInWellTable()
         {
-            var wellTable = new Table<Well>(tuplas: _data.Wells, primaryKey: w => w.Id);
+            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id);
 
             var well = new Well(new Geometry());
 
@@ -34,7 +34,7 @@ namespace NewDatabase.Test.TableTest
         [Fact]
         public void ShouldInsertWellInWellTableAndInsertedIsACopy()
         {
-            var wellTable = new Table<Well>(tuplas: _data.Wells, primaryKey: w => w.Id);
+            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id);
 
             var well = new Well(new Geometry());
 
@@ -47,7 +47,7 @@ namespace NewDatabase.Test.TableTest
         [Fact]
         public void ShouldThrowExceptionIfTheSameEntityIsInserted()
         {
-            var wellTable = new Table<Well>(tuplas: _data.Wells, primaryKey: w => w.Id);
+            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id);
 
             var well = new Well(new Geometry());
 

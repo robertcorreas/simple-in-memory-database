@@ -11,17 +11,17 @@ namespace NewDatabase.Test.RelationTest.OneToOneTest
 {
     public class WellAndGeometryTest
     {
-        private readonly Data _data;
+        private readonly DataTest.DataTest _dataTest;
 
         public WellAndGeometryTest()
         {
-            _data = new Data();
+            _dataTest = new DataTest.DataTest();
         }
 
         public void CreateRelationOneToOne()
         {
-            var wellTable = new Table<Well>(tuplas: _data.Wells, primaryKey: w => w.Id);
-            var geometryTable = new Table<Geometry>(tuplas: _data.Geometries, primaryKey: g => g.Id);
+            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id);
+            var geometryTable = new Table<Geometry>(tuplas: _dataTest.Geometries, primaryKey: g => g.Id);
 
             var relation = new Relation();
             relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
