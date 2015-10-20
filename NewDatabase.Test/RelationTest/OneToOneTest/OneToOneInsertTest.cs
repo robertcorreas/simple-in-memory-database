@@ -32,7 +32,7 @@ namespace NewDatabase.Test.RelationTest.OneToOneTest
             relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
             var geometria = new Geometry();
-            var well = new Well(geometria);
+            var well = new Well(geometria,new Trajectory());
 
             var ex = Assert.Throws<InvalidOperationException>(() =>
             {
@@ -55,7 +55,7 @@ namespace NewDatabase.Test.RelationTest.OneToOneTest
             relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
             var geometry = new Geometry();
-            var well = new Well(geometry);
+            var well = new Well(geometry, new Trajectory());
 
             geometryTable.Insert(geometry);
             wellTable.Insert(well);

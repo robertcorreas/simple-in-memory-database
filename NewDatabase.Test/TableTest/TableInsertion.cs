@@ -24,7 +24,7 @@ namespace NewDatabase.Test.TableTest
         {
             var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id);
 
-            var well = new Well(new Geometry());
+            var well = new Well(new Geometry(),new Trajectory());
 
             wellTable.Insert(well);
 
@@ -36,7 +36,7 @@ namespace NewDatabase.Test.TableTest
         {
             var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id);
 
-            var well = new Well(new Geometry());
+            var well = new Well(new Geometry(),new Trajectory());
 
             wellTable.Insert(well);
 
@@ -49,7 +49,7 @@ namespace NewDatabase.Test.TableTest
         {
             var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id);
 
-            var well = new Well(new Geometry());
+            var well = new Well(new Geometry(), new Trajectory());
 
             wellTable.Insert(well);
 

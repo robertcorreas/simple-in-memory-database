@@ -31,7 +31,7 @@ namespace NewDatabase.Test.CascateDeletion
             relation.CreateOneToOne(wellTable,geometryTable,w => w.Geometry.Id);
 
             var geometry = new Geometry();
-            var well = new Well(geometry);
+            var well = new Well(geometry, new Trajectory());
 
             geometryTable.Insert(geometry);
             wellTable.Insert(well);
@@ -54,7 +54,7 @@ namespace NewDatabase.Test.CascateDeletion
             relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id, false);
 
             var geometry = new Geometry();
-            var well = new Well(geometry);
+            var well = new Well(geometry,new Trajectory());
 
             geometryTable.Insert(geometry);
             wellTable.Insert(well);
@@ -77,10 +77,10 @@ namespace NewDatabase.Test.CascateDeletion
             relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
             var geometry1 = new Geometry();
-            var well1 = new Well(geometry1);
+            var well1 = new Well(geometry1, new Trajectory());
 
             var geometry2 = new Geometry();
-            var well2 = new Well(geometry2);
+            var well2 = new Well(geometry2, new Trajectory());
 
             geometryTable.Insert(geometry1);
             wellTable.Insert(well1);
