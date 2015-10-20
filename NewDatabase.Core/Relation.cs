@@ -18,6 +18,8 @@ namespace NewDatabase.Core
             where T1 : Entity
             where T2 : Entity
         {
+            var compiledForeignKey = foreignKey.Compile();
+
             var relationProperties = new RelationProperties
             {
                 RelationType = RelationType.OneToOne,
@@ -34,7 +36,7 @@ namespace NewDatabase.Core
                 }
             });
 
-            relationProperties.OnForeignKey(entity => foreignKey.Compile().Invoke(entity as T1));
+            relationProperties.OnForeignKey(entity => compiledForeignKey(entity as T1));
 
             AddRelationProperties(tableWithDependency.GetType(), relationProperties);
             AddRelationProperties(tableDependency.GetType(), relationProperties);
@@ -59,8 +61,10 @@ namespace NewDatabase.Core
             return new List<RelationProperties>();
         }
 
-        public void CreateOneToMany<T1,T2>(Table<T1> tableDependency, Table<T2> tableWithDependency, Func<T2, Guid> foreignKey, bool cascateDeletion = true) where T1: Entity where T2: Entity
+        public void CreateOneToMany<T1,T2>(Table<T1> tableDependency, Table<T2> tableWithDependency, Expression<Func<T2, Guid>> foreignKey, bool cascateDeletion = true) where T1: Entity where T2: Entity
         {
+            var compiledForeignKey = foreignKey.Compile();
+
             var relationProperties = new RelationProperties
             {
                 RelationType = RelationType.OneToMany,
@@ -73,11 +77,11 @@ namespace NewDatabase.Core
             {
                 if (tableType == tableWithDependency.GetType() && cascateDeletion)
                 {
-                    tableWithDependency.Delete(fk);
+                    tableWithDependency.Delete(t => relationProperties.ForeignKey(t) == fk);
                 }
             });
 
-            relationProperties.OnForeignKey(entity => foreignKey(entity as T2));
+            relationProperties.OnForeignKey(entity => compiledForeignKey(entity as T2));
 
             AddRelationProperties(tableWithDependency.GetType(), relationProperties);
             AddRelationProperties(tableDependency.GetType(), relationProperties);

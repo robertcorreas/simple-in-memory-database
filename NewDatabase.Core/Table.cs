@@ -35,20 +35,18 @@ namespace NewDatabase.Core
             if (_tuplas.ContainsKey(PrimaryKey(entity)))
                 throw new ArgumentException("Already exist an entity with this id");
 
-            var relationProperties = _relation.Get(this.GetType());
+            var type = this.GetType();
+
+            var relationProperties = _relation.Get(type);
 
             foreach (var relationPropertie in relationProperties)
             {
-                if (relationPropertie.TableWithDependency == this.GetType())
+                if (relationPropertie.TableWithDependency == type)
                 {
                     var foreignKey = relationPropertie.ForeignKey(entity);
 
                     if (!_index.Contains(foreignKey)) throw new InvalidOperationException("Invalid FK");
 
-                }
-                if (relationPropertie.TableDependency == this.GetType())
-                {
-                    //TODO
                 }
             }
 
@@ -73,9 +71,19 @@ namespace NewDatabase.Core
 
             foreach (var relationPropertie in relationProperties)
             {
-                if (relationPropertie.TableWithDependency == this.GetType())
+                if (relationPropertie.RelationType == RelationType.OneToOne)
                 {
-                    relationPropertie.DeleteOperation(relationPropertie.TableDependency, relationPropertie.ForeignKey(entity));
+                    if (relationPropertie.TableWithDependency == this.GetType())
+                    {
+                        relationPropertie.DeleteOperation(relationPropertie.TableDependency, relationPropertie.ForeignKey(entity));
+                    }
+                }
+                else if (relationPropertie.RelationType == RelationType.OneToMany)
+                {
+                    if (relationPropertie.TableDependency == this.GetType())
+                    {
+                        relationPropertie.DeleteOperation(relationPropertie.TableWithDependency, primaryKey);
+                    }
                 }
             }
 
@@ -93,6 +101,15 @@ namespace NewDatabase.Core
         public List<T> GetAll()
         {
             return _tuplas.Values.Select(ExpressionTreeCloner.DeepFieldClone).ToList();
+        }
+
+        public void Delete(Func<T, bool> query)
+        {
+            var toRemove = _tuplas.Values.Where(query).ToArray();
+            foreach (var t in toRemove)
+            {
+                _tuplas.Remove(t.Id);
+            }
         }
     }
 }
