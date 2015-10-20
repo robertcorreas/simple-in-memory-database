@@ -3,6 +3,7 @@ namespace NewDatabase.Core
     public enum RelationType
     {
         OneToOne,
-        OneToMany
+        OneToMany,
+        ManyToMany
     }
 }

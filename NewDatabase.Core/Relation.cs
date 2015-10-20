@@ -86,5 +86,38 @@ namespace NewDatabase.Core
             AddRelationProperties(tableWithDependency.GetType(), relationProperties);
             AddRelationProperties(tableDependency.GetType(), relationProperties);
         }
+
+        public void CreateManyToMany<T1,T2,T3>(Table<T1> table1, Table<T2> table2, Table<T3> relationalTable, Expression<Func<T3, Guid>> foreignKey1, Expression<Func<T3, Guid>> foreignKey2, bool cascateDeletion = true)
+            where T1: Entity
+            where T2 : Entity
+            where T3 : Entity
+        {
+            var compiledForeignKey1 = foreignKey1.Compile();
+            var compiledForeignKey2 = foreignKey2.Compile();
+
+            var relationProperties = new RelationProperties
+            {
+                RelationType = RelationType.ManyToMany,
+                TableWithDependency = table1.GetType(),
+                TableDependency = table2.GetType(),
+                RelationalTable = relationalTable.GetType(),
+                ForeignKey1 = (entity) =>  compiledForeignKey1(entity as T3),
+                ForeignKey2 = (entity) => compiledForeignKey2(entity as T3),
+                CascateDeletion = cascateDeletion
+            };
+
+            relationProperties.OnDeleteOperation((tableType, fk) =>
+            {
+                if ((tableType == table1.GetType() || tableType == table2.GetType()) && cascateDeletion)
+                {
+                    relationalTable.Delete(t => relationProperties.ForeignKey1(t) == fk || relationProperties.ForeignKey2(t) == fk);
+                }
+            });
+
+            AddRelationProperties(table1.GetType(), relationProperties);
+            AddRelationProperties(table2.GetType(), relationProperties);
+            AddRelationProperties(relationalTable.GetType(), relationProperties);
+
+        }
     }
 }

@@ -8,8 +8,13 @@ namespace NewDatabase.Core
         public RelationType RelationType { get; set; }
         public Type TableWithDependency { get; set; }
         public Type TableDependency { get; set; }
+        public Type RelationalTable { get; set; }
         [JsonIgnore]
         public Func<Entity, Guid> ForeignKey { get; private set; }
+        [JsonIgnore]
+        public Func<Entity, Guid> ForeignKey1 { get; set; }
+        [JsonIgnore]
+        public Func<Entity, Guid> ForeignKey2 { get; set; }
         [JsonIgnore]
         public Action<Type, Guid> DeleteOperation { get; private set; }
         public bool CascateDeletion { get; set; }

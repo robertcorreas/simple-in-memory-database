@@ -14,6 +14,8 @@ namespace NewDatabase.Test.DataTest
         public Dictionary<Guid, Geometry> Geometries{ get; set; }
         public Dictionary<Guid, Trajectory> Trajectories { get; set; }
         public Dictionary<Guid, TrajectoryPoint> TrajectoryPoints { get; set; }
+        public Dictionary<Guid, Graphic> Graphics { get; set; }
+        public Dictionary<Guid, TrajectoryGraphicRelationalTable> TrajectoryGraphicRelationalTables { get; set; }
 
         public DataTest()
         {
@@ -21,6 +23,8 @@ namespace NewDatabase.Test.DataTest
             Geometries = new Dictionary<Guid, Geometry>();
             Trajectories = new Dictionary<Guid, Trajectory>();
             TrajectoryPoints = new Dictionary<Guid, TrajectoryPoint>();
+            Graphics = new Dictionary<Guid, Graphic>();
+            TrajectoryGraphicRelationalTables = new Dictionary<Guid, TrajectoryGraphicRelationalTable>();
         }
     }
 }

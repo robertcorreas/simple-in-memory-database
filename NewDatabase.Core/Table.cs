@@ -46,7 +46,13 @@ namespace NewDatabase.Core
                     var foreignKey = relationPropertie.ForeignKey(entity);
 
                     if (!_index.Contains(foreignKey)) throw new InvalidOperationException("Invalid FK");
+                }
+                else if (relationPropertie.RelationalTable == type)
+                {
+                    var foreignKey1 = relationPropertie.ForeignKey1(entity);
+                    var foreignKey2 = relationPropertie.ForeignKey2(entity);
 
+                    if (!(_index.Contains(foreignKey1) && _index.Contains(foreignKey2))) throw new InvalidOperationException("Invalid FK");
                 }
             }
 
