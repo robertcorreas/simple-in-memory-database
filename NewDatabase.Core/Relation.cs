@@ -58,5 +58,29 @@ namespace NewDatabase.Core
                 return Relations[tableType];
             return new List<RelationProperties>();
         }
+
+        public void CreateOneToMany<T1,T2>(Table<T1> tableDependency, Table<T2> tableWithDependency, Func<T2, Guid> foreignKey, bool cascateDeletion = true) where T1: Entity where T2: Entity
+        {
+            var relationProperties = new RelationProperties
+            {
+                RelationType = RelationType.OneToMany,
+                TableWithDependency = tableWithDependency.GetType(),
+                TableDependency = tableDependency.GetType(),
+                CascateDeletion = cascateDeletion
+            };
+
+            relationProperties.OnDeleteOperation((tableType, fk) =>
+            {
+                if (tableType == tableWithDependency.GetType() && cascateDeletion)
+                {
+                    tableWithDependency.Delete(fk);
+                }
+            });
+
+            relationProperties.OnForeignKey(entity => foreignKey(entity as T2));
+
+            AddRelationProperties(tableWithDependency.GetType(), relationProperties);
+            AddRelationProperties(tableDependency.GetType(), relationProperties);
+        }
     }
 }

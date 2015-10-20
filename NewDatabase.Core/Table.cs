@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -87,6 +88,11 @@ namespace NewDatabase.Core
             var primaryKey = PrimaryKey(entity);
 
             Delete(primaryKey);
+        }
+
+        public List<T> GetAll()
+        {
+            return _tuplas.Values.Select(ExpressionTreeCloner.DeepFieldClone).ToList();
         }
     }
 }

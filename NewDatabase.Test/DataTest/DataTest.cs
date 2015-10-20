@@ -12,11 +12,15 @@ namespace NewDatabase.Test.DataTest
     {
         public Dictionary<Guid, Well> Wells { get; set; }
         public Dictionary<Guid, Geometry> Geometries{ get; set; }
+        public Dictionary<Guid, Trajectory> Trajectories { get; set; }
+        public Dictionary<Guid, TrajectoryPoint> TrajectoryPoints { get; set; }
 
         public DataTest()
         {
             Wells = new Dictionary<Guid, Well>();
             Geometries = new Dictionary<Guid, Geometry>();
+            Trajectories = new Dictionary<Guid, Trajectory>();
+            TrajectoryPoints = new Dictionary<Guid, TrajectoryPoint>();
         }
     }
 }

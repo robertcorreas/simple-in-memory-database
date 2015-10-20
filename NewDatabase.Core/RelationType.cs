@@ -2,6 +2,7 @@ namespace NewDatabase.Core
 {
     public enum RelationType
     {
-        OneToOne
+        OneToOne,
+        OneToMany
     }
 }
