@@ -121,5 +121,13 @@ namespace NewDatabase.Core
                 _tuplas.Remove(t.Id);
             }
         }
+
+        public void Update(T entity)
+        {
+            if (!_tuplas.ContainsKey(_primaryKey(entity)))
+                throw new ArgumentException("Invalid entity");
+
+            _tuplas[_primaryKey(entity)] = entity;
+        }
     }
 }

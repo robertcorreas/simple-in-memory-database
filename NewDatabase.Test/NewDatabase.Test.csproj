@@ -81,6 +81,7 @@
     <Compile Include="EntitiesTest\Well.cs" />
     <Compile Include="TableTest\TableGetAndGetAllTest.cs" />
     <Compile Include="TableTest\TableInsertion.cs" />
+    <Compile Include="TableTest\TableUpdateTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NewDatabase.Core\NewDatabase.Core.csproj">
