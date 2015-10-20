@@ -171,5 +171,52 @@ namespace NewDatabase.Test.SerializationRequiriments
             Assert.True(0 == newTrajectoryTable.Count);
             Assert.True(0 == newTrajectoryPointTable.Count);
         }
+
+        [Fact]
+        public void ShouldSerializeManyToMany()
+        {
+            var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories, t => t.Id, _relation, _index);
+            var graphicTable = new Table<Graphic>(_dataTest.Graphics, g => g.Id, _relation, _index);
+            var trajectoryGraphicRelationalTable =
+                new Table<TrajectoryGraphicRelationalTable>(_dataTest.TrajectoryGraphicRelationalTables, tgr => tgr.Id,
+                    _relation, _index);
+
+            var trajectory = new Trajectory();
+            var graphic = new Graphic();
+            var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
+
+            _relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
+                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
+
+            trajectoryTable.Insert(trajectory);
+            graphicTable.Insert(graphic);
+            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic);
+
+            Assert.True(1 == trajectoryTable.Count);
+            Assert.True(1 == graphicTable.Count);
+            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+
+            var jsonData = JsonConvert.SerializeObject(_dataTest, Formatting.Indented);
+            var jsonIndex = JsonConvert.SerializeObject(_index, Formatting.Indented);
+
+            var newData = JsonConvert.DeserializeObject<DataTest.DataTest>(jsonData);
+            var newIndex = JsonConvert.DeserializeObject<Index>(jsonIndex);
+            var newRelation = new Relation();
+
+            var newTrajectoryTable = new Table<Trajectory>(newData.Trajectories, t => t.Id, newRelation, newIndex);
+            var newGraphicTable = new Table<Graphic>(newData.Graphics, g => g.Id, newRelation, newIndex);
+            var newTrajectoryGraphicRelationalTable =
+                new Table<TrajectoryGraphicRelationalTable>(newData.TrajectoryGraphicRelationalTables, tgr => tgr.Id,
+                    newRelation, newIndex);
+
+            newRelation.CreateManyToMany(newTrajectoryTable, newGraphicTable, newTrajectoryGraphicRelationalTable,
+                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
+
+            newTrajectoryTable.Delete(trajectory);
+
+            Assert.True(0 == newTrajectoryTable.Count);
+            Assert.True(1 == newGraphicTable.Count);
+            Assert.True(0 == newTrajectoryGraphicRelationalTable.Count);
+        }
     }
 }
