@@ -1,37 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NewDatabase.Core;
 using NewDatabase.Test.EntitiesTest;
 using Xunit;
 
 namespace NewDatabase.Test.RelationTest.OneToManyTest
 {
-    
     public class OneToManyInsertTest
     {
         private readonly DataTest.DataTest _dataTest;
-        private readonly Relation _relation;
         private readonly Index _index;
-        
+        private readonly Relation _relation;
 
         public OneToManyInsertTest()
         {
             _dataTest = new DataTest.DataTest();
             _relation = new Relation();
-            _index= new Index();
-
+            _index = new Index();
         }
 
         [Fact]
         public void ShouldInsertOneToManyIfFkIsSatisfy()
         {
-            var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories,t=>t.Id,_relation,_index);
-            var trajectoryPointTable = new Table<TrajectoryPoint>(_dataTest.TrajectoryPoints, tp => tp.Id, _relation, _index);
+            var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories, t => t.Id, _relation, _index);
+            var trajectoryPointTable = new Table<TrajectoryPoint>(_dataTest.TrajectoryPoints, tp => tp.Id, _relation,
+                _index);
 
-            _relation.CreateOneToMany(trajectoryTable,trajectoryPointTable, tp => tp.Trajectory.Id);
+            _relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
 
             var trajectory = new Trajectory();
 
@@ -49,7 +43,7 @@ namespace NewDatabase.Test.RelationTest.OneToManyTest
 
             foreach (var trajectoryPoint in trajectoryPointTable.GetAll())
             {
-                Assert.Equal(trajectory.Id,trajectoryPoint.Trajectory.Id);
+                Assert.Equal(trajectory.Id, trajectoryPoint.Trajectory.Id);
             }
         }
 
@@ -57,7 +51,8 @@ namespace NewDatabase.Test.RelationTest.OneToManyTest
         public void ShouldThrowExceptionWhenFkDependencyNotSatisfy()
         {
             var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories, t => t.Id, _relation, _index);
-            var trajectoryPointTable = new Table<TrajectoryPoint>(_dataTest.TrajectoryPoints, tp => tp.Id, _relation, _index);
+            var trajectoryPointTable = new Table<TrajectoryPoint>(_dataTest.TrajectoryPoints, tp => tp.Id, _relation,
+                _index);
 
             _relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
 
@@ -65,13 +60,10 @@ namespace NewDatabase.Test.RelationTest.OneToManyTest
 
             var tp1 = new TrajectoryPoint(trajectory);
 
-            var ex = Assert.Throws<InvalidOperationException>(() =>
-            {
-                trajectoryPointTable.Insert(tp1);
-            });
+            var ex = Assert.Throws<InvalidOperationException>(() => { trajectoryPointTable.Insert(tp1); });
 
 
-            Assert.Equal("Invalid FK",ex.Message);
+            Assert.Equal("Invalid FK", ex.Message);
             Assert.True(0 == trajectoryTable.Count);
             Assert.True(0 == trajectoryPointTable.Count);
         }

@@ -124,7 +124,7 @@ namespace NewDatabase.Test.CascateDeletion
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
 
             _relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id,false);
+                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id, false);
 
             trajectoryTable.Insert(trajectory);
             graphicTable.Insert(graphic);

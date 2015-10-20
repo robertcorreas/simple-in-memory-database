@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NewDatabase.Core;
-using NewDatabase.Test.DataTest;
 using NewDatabase.Test.EntitiesTest;
 using Xunit;
 
@@ -22,21 +17,21 @@ namespace NewDatabase.Test.TableTest
         [Fact]
         public void ShouldInsertWellInWellTable()
         {
-            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id);
+            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id);
 
-            var well = new Well(new Geometry(),new Trajectory());
+            var well = new Well(new Geometry(), new Trajectory());
 
             wellTable.Insert(well);
 
-            Assert.Equal(well.Id,wellTable.Get(well.Id).Id);
+            Assert.Equal(well.Id, wellTable.Get(well.Id).Id);
         }
 
         [Fact]
         public void ShouldInsertWellInWellTableAndInsertedIsACopy()
         {
-            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id);
+            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id);
 
-            var well = new Well(new Geometry(),new Trajectory());
+            var well = new Well(new Geometry(), new Trajectory());
 
             wellTable.Insert(well);
 
@@ -47,21 +42,17 @@ namespace NewDatabase.Test.TableTest
         [Fact]
         public void ShouldThrowExceptionIfTheSameEntityIsInserted()
         {
-            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id);
+            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id);
 
             var well = new Well(new Geometry(), new Trajectory());
 
             wellTable.Insert(well);
 
-            var ex = Assert.Throws<ArgumentException>(() =>
-            {
-                wellTable.Insert(well);
-            });
+            var ex = Assert.Throws<ArgumentException>(() => { wellTable.Insert(well); });
 
             Assert.Equal("Already exist an entity with this id", ex.Message);
 
             Assert.True(1 == wellTable.Count);
         }
     }
-
 }

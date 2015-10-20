@@ -239,7 +239,6 @@ namespace NewDatabase.Test.SerializationRequirements
                 tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
 
-
             var geometry = new Geometry();
             var trajectory = new Trajectory();
             var well = new Well(geometry, trajectory);
@@ -251,7 +250,6 @@ namespace NewDatabase.Test.SerializationRequirements
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
 
-            
 
             trajectoryTable.Insert(trajectory);
             geometryTable.Insert(geometry);
@@ -280,9 +278,12 @@ namespace NewDatabase.Test.SerializationRequirements
             var newWellTable = new Table<Well>(newData.Wells, w => w.Id, newRelation, newIndex);
             var newGeometryTable = new Table<Geometry>(newData.Geometries, g => g.Id, newRelation, newIndex);
             var newTrajectoryTable = new Table<Trajectory>(newData.Trajectories, t => t.Id, newRelation, newIndex);
-            var newTrajectoryPointTable = new Table<TrajectoryPoint>(newData.TrajectoryPoints, tp => tp.Id, newRelation, newIndex);
+            var newTrajectoryPointTable = new Table<TrajectoryPoint>(newData.TrajectoryPoints, tp => tp.Id, newRelation,
+                newIndex);
             var newGraphicTable = new Table<Graphic>(newData.Graphics, g => g.Id, newRelation, newIndex);
-            var newTrajectoryGraphicRelationalTable = new Table<TrajectoryGraphicRelationalTable>(newData.TrajectoryGraphicRelationalTables, tgr => tgr.Id, newRelation, newIndex);
+            var newTrajectoryGraphicRelationalTable =
+                new Table<TrajectoryGraphicRelationalTable>(newData.TrajectoryGraphicRelationalTables, tgr => tgr.Id,
+                    newRelation, newIndex);
 
             newRelation.CreateOneToOne(newWellTable, newGeometryTable, w => w.Geometry.Id);
             newRelation.CreateOneToOne(newWellTable, newTrajectoryTable, w => w.Trajectory.Id);

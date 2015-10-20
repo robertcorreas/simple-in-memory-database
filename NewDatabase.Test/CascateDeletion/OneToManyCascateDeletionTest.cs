@@ -50,7 +50,7 @@ namespace NewDatabase.Test.CascateDeletion
             var trajectoryPointTable = new Table<TrajectoryPoint>(_dataTest.TrajectoryPoints, tp => tp.Id, _relation,
                 _index);
 
-            _relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id,false);
+            _relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id, false);
 
             var trajectory = new Trajectory();
 
@@ -98,7 +98,7 @@ namespace NewDatabase.Test.CascateDeletion
             Assert.True(1 == trajectoryTable.Count);
             Assert.True(2 == trajectoryPointTable.Count);
 
-            Assert.Equal(trajectory2.Id,trajectoryTable.Get(trajectory2.Id).Id);
+            Assert.Equal(trajectory2.Id, trajectoryTable.Get(trajectory2.Id).Id);
 
             foreach (var trajectoryPoint in trajectoryPointTable.GetAll())
             {

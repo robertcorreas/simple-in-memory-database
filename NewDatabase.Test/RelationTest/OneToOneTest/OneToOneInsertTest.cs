@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using NewDatabase.Core;
-using NewDatabase.Test.DataTest;
 using NewDatabase.Test.EntitiesTest;
 using Xunit;
 
@@ -26,18 +20,15 @@ namespace NewDatabase.Test.RelationTest.OneToOneTest
             var relation = new Relation();
             var index = new Index();
 
-            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id, relation: relation, index: index);
-            var geometryTable = new Table<Geometry>(tuplas: _dataTest.Geometries, primaryKey: g => g.Id, relation: relation, index: index);
+            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, relation, index);
+            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, relation, index);
 
             relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
             var geometria = new Geometry();
-            var well = new Well(geometria,new Trajectory());
+            var well = new Well(geometria, new Trajectory());
 
-            var ex = Assert.Throws<InvalidOperationException>(() =>
-            {
-                wellTable.Insert(well);
-            });
+            var ex = Assert.Throws<InvalidOperationException>(() => { wellTable.Insert(well); });
 
             Assert.True(0 == wellTable.Count);
             Assert.Equal("Invalid FK", ex.Message);
@@ -49,8 +40,8 @@ namespace NewDatabase.Test.RelationTest.OneToOneTest
             var relation = new Relation();
             var index = new Index();
 
-            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id, relation: relation, index: index);
-            var geometryTable = new Table<Geometry>(tuplas: _dataTest.Geometries, primaryKey: g => g.Id, relation: relation, index: index);
+            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, relation, index);
+            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, relation, index);
 
             relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 

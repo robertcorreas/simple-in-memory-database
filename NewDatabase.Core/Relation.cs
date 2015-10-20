@@ -24,8 +24,7 @@ namespace NewDatabase.Core
             {
                 RelationType = RelationType.OneToOne,
                 TableWithDependency = tableWithDependency.GetType(),
-                TableDependency = tableDependency.GetType(),
-                CascateDeletion = cascateDeletion
+                TableDependency = tableDependency.GetType()
             };
 
             relationProperties.OnDeleteOperation((tableType, fk) =>
@@ -61,7 +60,8 @@ namespace NewDatabase.Core
             return new List<RelationProperties>();
         }
 
-        public void CreateOneToMany<T1,T2>(Table<T1> tableDependency, Table<T2> tableWithDependency, Expression<Func<T2, Guid>> foreignKey, bool cascateDeletion = true) where T1: Entity where T2: Entity
+        public void CreateOneToMany<T1, T2>(Table<T1> tableDependency, Table<T2> tableWithDependency,
+            Expression<Func<T2, Guid>> foreignKey, bool cascateDeletion = true) where T1 : Entity where T2 : Entity
         {
             var compiledForeignKey = foreignKey.Compile();
 
@@ -69,8 +69,7 @@ namespace NewDatabase.Core
             {
                 RelationType = RelationType.OneToMany,
                 TableWithDependency = tableWithDependency.GetType(),
-                TableDependency = tableDependency.GetType(),
-                CascateDeletion = cascateDeletion
+                TableDependency = tableDependency.GetType()
             };
 
             relationProperties.OnDeleteOperation((tableType, fk) =>
@@ -87,8 +86,9 @@ namespace NewDatabase.Core
             AddRelationProperties(tableDependency.GetType(), relationProperties);
         }
 
-        public void CreateManyToMany<T1,T2,T3>(Table<T1> table1, Table<T2> table2, Table<T3> relationalTable, Expression<Func<T3, Guid>> foreignKey1, Expression<Func<T3, Guid>> foreignKey2, bool cascateDeletion = true)
-            where T1: Entity
+        public void CreateManyToMany<T1, T2, T3>(Table<T1> table1, Table<T2> table2, Table<T3> relationalTable,
+            Expression<Func<T3, Guid>> foreignKey1, Expression<Func<T3, Guid>> foreignKey2, bool cascateDeletion = true)
+            where T1 : Entity
             where T2 : Entity
             where T3 : Entity
         {
@@ -101,23 +101,22 @@ namespace NewDatabase.Core
                 TableWithDependency = table1.GetType(),
                 TableDependency = table2.GetType(),
                 RelationalTable = relationalTable.GetType(),
-                ForeignKey1 = (entity) =>  compiledForeignKey1(entity as T3),
-                ForeignKey2 = (entity) => compiledForeignKey2(entity as T3),
-                CascateDeletion = cascateDeletion
+                ForeignKey1 = entity => compiledForeignKey1(entity as T3),
+                ForeignKey2 = entity => compiledForeignKey2(entity as T3)
             };
 
             relationProperties.OnDeleteOperation((tableType, fk) =>
             {
                 if ((tableType == table1.GetType() || tableType == table2.GetType()) && cascateDeletion)
                 {
-                    relationalTable.Delete(t => relationProperties.ForeignKey1(t) == fk || relationProperties.ForeignKey2(t) == fk);
+                    relationalTable.Delete(
+                        t => relationProperties.ForeignKey1(t) == fk || relationProperties.ForeignKey2(t) == fk);
                 }
             });
 
             AddRelationProperties(table1.GetType(), relationProperties);
             AddRelationProperties(table2.GetType(), relationProperties);
             AddRelationProperties(relationalTable.GetType(), relationProperties);
-
         }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NewDatabase.Core;
-using NewDatabase.Test.DataTest;
+﻿using NewDatabase.Core;
 using NewDatabase.Test.EntitiesTest;
 using Xunit;
 
@@ -25,10 +19,10 @@ namespace NewDatabase.Test.CascateDeletion
             var index = new Index();
             var relation = new Relation();
 
-            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id, relation:relation, index:index);
-            var geometryTable = new Table<Geometry>(tuplas: _dataTest.Geometries, primaryKey: g => g.Id, relation: relation, index: index);
+            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, relation, index);
+            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, relation, index);
 
-            relation.CreateOneToOne(wellTable,geometryTable,w => w.Geometry.Id);
+            relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
             var geometry = new Geometry();
             var well = new Well(geometry, new Trajectory());
@@ -42,19 +36,20 @@ namespace NewDatabase.Test.CascateDeletion
             Assert.True(0 == geometryTable.Count);
             Assert.True(0 == index.Count);
         }
+
         [Fact]
         public void ShouldNotDeleteInCascate()
         {
             var index = new Index();
             var relation = new Relation();
 
-            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id, relation: relation, index: index);
-            var geometryTable = new Table<Geometry>(tuplas: _dataTest.Geometries, primaryKey: g => g.Id, relation: relation, index: index);
+            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, relation, index);
+            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, relation, index);
 
             relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id, false);
 
             var geometry = new Geometry();
-            var well = new Well(geometry,new Trajectory());
+            var well = new Well(geometry, new Trajectory());
 
             geometryTable.Insert(geometry);
             wellTable.Insert(well);
@@ -71,8 +66,8 @@ namespace NewDatabase.Test.CascateDeletion
             var index = new Index();
             var relation = new Relation();
 
-            var wellTable = new Table<Well>(tuplas: _dataTest.Wells, primaryKey: w => w.Id, relation: relation, index: index);
-            var geometryTable = new Table<Geometry>(tuplas: _dataTest.Geometries, primaryKey: g => g.Id, relation: relation, index: index);
+            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, relation, index);
+            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, relation, index);
 
             relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
@@ -98,11 +93,9 @@ namespace NewDatabase.Test.CascateDeletion
             Assert.True(1 == geometryTable.Count);
             Assert.True(2 == index.Count);
 
-            Assert.Equal(well2.Id,wellTable.Get(well2.Id).Id);
+            Assert.Equal(well2.Id, wellTable.Get(well2.Id).Id);
             Assert.Equal(geometry2.Id, wellTable.Get(well2.Id).Geometry.Id);
             Assert.Equal(geometry2.Id, geometryTable.Get(geometry2.Id).Id);
         }
-
-
     }
 }

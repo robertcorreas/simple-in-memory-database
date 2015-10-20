@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NewDatabase.Core
 {
     public class Index
     {
-        public Dictionary<Guid, bool> Indexes { get; private set; }
-
         public Index()
         {
             Indexes = new Dictionary<Guid, bool>();
         }
+
+        public Dictionary<Guid, bool> Indexes { get; }
 
         public int Count
         {
@@ -27,7 +24,7 @@ namespace NewDatabase.Core
 
         public void CreateIndex(Guid id)
         {
-            Indexes.Add(id,true);
+            Indexes.Add(id, true);
         }
 
         public void DeleteIndex(Guid primaryKey)

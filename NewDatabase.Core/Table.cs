@@ -9,6 +9,7 @@ namespace NewDatabase.Core
     public class Table<T> where T : Entity
     {
         private readonly Index _index;
+        private readonly Func<T, Guid> _primaryKey;
         private readonly Relation _relation;
         private readonly Dictionary<Guid, T> _tuplas;
 
@@ -20,8 +21,6 @@ namespace NewDatabase.Core
             _index = index ?? new Index();
             _relation = relation ?? new Relation();
         }
-
-        private readonly Func<T, Guid> _primaryKey;
 
         public int Count
         {
@@ -65,7 +64,7 @@ namespace NewDatabase.Core
 
         public T Get(Guid primaryKey)
         {
-            return   ExpressionTreeCloner.DeepFieldClone(_tuplas[primaryKey]);
+            return ExpressionTreeCloner.DeepFieldClone(_tuplas[primaryKey]);
         }
 
         public void Delete(Guid primaryKey)
