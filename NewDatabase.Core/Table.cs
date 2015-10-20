@@ -41,7 +41,7 @@ namespace NewDatabase.Core
 
             foreach (var relationPropertie in relationProperties)
             {
-                if (relationPropertie.TableWithDependency == type)
+                if (relationPropertie.TableWithDependency == type && relationPropertie.RelationType != RelationType.ManyToMany)
                 {
                     var foreignKey = relationPropertie.ForeignKey(entity);
 
@@ -72,24 +72,31 @@ namespace NewDatabase.Core
         public void Delete(Guid primaryKey)
         {
             var entity = _tuplas[primaryKey];
+            var tableType = this.GetType();
 
-            var relationProperties = _relation.Get(this.GetType());
+            var relationProperties = _relation.Get(tableType);
 
             foreach (var relationPropertie in relationProperties)
             {
                 if (relationPropertie.RelationType == RelationType.OneToOne)
                 {
-                    if (relationPropertie.TableWithDependency == this.GetType())
+                    if (relationPropertie.TableWithDependency == tableType)
                     {
                         relationPropertie.DeleteOperation(relationPropertie.TableDependency, relationPropertie.ForeignKey(entity));
                     }
                 }
                 else if (relationPropertie.RelationType == RelationType.OneToMany)
                 {
-                    if (relationPropertie.TableDependency == this.GetType())
+                    if (relationPropertie.TableDependency == tableType)
                     {
                         relationPropertie.DeleteOperation(relationPropertie.TableWithDependency, primaryKey);
                     }
+                }
+                else
+                {
+
+                    relationPropertie.DeleteOperation(tableType, primaryKey);
+
                 }
             }
 
