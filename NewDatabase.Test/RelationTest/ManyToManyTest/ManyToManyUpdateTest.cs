@@ -1,42 +1,23 @@
 ﻿using System;
 using System.Linq;
-using NewDatabase.Core;
 using NewDatabase.Test.EntitiesTest;
+using NewDatabase.Test.Helpers;
 using Xunit;
 
 namespace NewDatabase.Test.RelationTest.ManyToManyTest
 {
-    public class ManyToManyUpdateTest
+    public class ManyToManyUpdateTest : TesteBase
     {
-        private readonly DataTest.DataTest _dataTest;
-        private readonly Index _index;
-        private readonly Relation _relation;
-
-        #region Construtores
-
-        public ManyToManyUpdateTest()
-        {
-            _dataTest = new DataTest.DataTest();
-            _index = new Index();
-            _relation = new Relation();
-        }
-
-        #endregion
-
         [Fact(DisplayName = "Should Update if Fk Satisfy (ManyToMany)")]
         public void ShouldUpdateIfFkSatisfy()
         {
-            var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories, t => t.Id, _relation, _index);
-            var graphicTable = new Table<Graphic>(_dataTest.Graphics, g => g.Id, _relation, _index);
-            var trajectoryGraphicRelationalTable =
-                new Table<TrajectoryGraphicRelationalTable>(_dataTest.TrajectoryGraphicRelationalTables, tgr => tgr.Id,
-                    _relation, _index);
+            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
+                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
             var trajectory = new Trajectory();
             var trajectory2 = new Trajectory();
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
-
 
             trajectoryTable.Insert(trajectory);
             trajectoryTable.Insert(trajectory2);
@@ -61,16 +42,10 @@ namespace NewDatabase.Test.RelationTest.ManyToManyTest
             Assert.Equal(graphic.Id, trajectoryGraphicRelationalTable.GetAll().First().Graphic.Id);
         }
 
-        [Fact(DisplayName = "Should Throw Exception When Fk Dependency Not Satisfy (ManyToMany)")]
+        [Fact(DisplayName = "Should Throw Exception When Fk Dependency Not Satisfy - Update(ManyToMany)")]
         public void ShouldThrowExceptionWhenFkDependencyNotSatisfy()
         {
-            var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories, t => t.Id, _relation, _index);
-            var graphicTable = new Table<Graphic>(_dataTest.Graphics, g => g.Id, _relation, _index);
-            var trajectoryGraphicRelationalTable =
-                new Table<TrajectoryGraphicRelationalTable>(_dataTest.TrajectoryGraphicRelationalTables, tgr => tgr.Id,
-                    _relation, _index);
-
-            _relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
+            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
                 tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
             var trajectory = new Trajectory();

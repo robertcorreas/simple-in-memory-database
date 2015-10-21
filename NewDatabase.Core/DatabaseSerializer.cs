@@ -8,12 +8,16 @@ namespace NewDatabase.Core
         private readonly Index _index;
         private readonly Relation _relation;
 
+        #region Construtores
+
         public DatabaseSerializer(Data data, Relation relation, Index index)
         {
             _data = data;
             _relation = relation;
             _index = index;
         }
+
+        #endregion
 
         public JsonDatabase Serialize()
         {

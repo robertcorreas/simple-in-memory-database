@@ -4,6 +4,8 @@ namespace NewDatabase.Core
 {
     public class RelationProperties
     {
+        #region Propriedades
+
         public RelationType RelationType { get; set; }
         public Type TableWithDependency { get; set; }
         public Type TableDependency { get; set; }
@@ -12,6 +14,8 @@ namespace NewDatabase.Core
         public Func<Entity, Guid> ForeignKey1 { get; set; }
         public Func<Entity, Guid> ForeignKey2 { get; set; }
         public Action<Type, Guid> DeleteOperation { get; private set; }
+
+        #endregion
 
         public void OnDeleteOperation(Action<Type, Guid> action)
         {

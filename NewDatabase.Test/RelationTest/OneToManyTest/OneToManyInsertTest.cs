@@ -1,31 +1,16 @@
 ﻿using System;
-using NewDatabase.Core;
 using NewDatabase.Test.EntitiesTest;
+using NewDatabase.Test.Helpers;
 using Xunit;
 
 namespace NewDatabase.Test.RelationTest.OneToManyTest
 {
-    public class OneToManyInsertTest
+    public class OneToManyInsertTest : TesteBase
     {
-        private readonly DataTest.DataTest _dataTest;
-        private readonly Index _index;
-        private readonly Relation _relation;
-
-        public OneToManyInsertTest()
-        {
-            _dataTest = new DataTest.DataTest();
-            _relation = new Relation();
-            _index = new Index();
-        }
-
-        [Fact]
+        [Fact(DisplayName = "Should Insert OneToMany If Fk Is Satisfy")]
         public void ShouldInsertOneToManyIfFkIsSatisfy()
         {
-            var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories, t => t.Id, _relation, _index);
-            var trajectoryPointTable = new Table<TrajectoryPoint>(_dataTest.TrajectoryPoints, tp => tp.Id, _relation,
-                _index);
-
-            _relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
+            Relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
 
             var trajectory = new Trajectory();
 
@@ -47,14 +32,10 @@ namespace NewDatabase.Test.RelationTest.OneToManyTest
             }
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should Throw Exception When Fk Dependency Not Satisfy (OneToMany)")]
         public void ShouldThrowExceptionWhenFkDependencyNotSatisfy()
         {
-            var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories, t => t.Id, _relation, _index);
-            var trajectoryPointTable = new Table<TrajectoryPoint>(_dataTest.TrajectoryPoints, tp => tp.Id, _relation,
-                _index);
-
-            _relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
+            Relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
 
             var trajectory = new Trajectory();
 

@@ -1,24 +1,15 @@
 ﻿using System;
-using NewDatabase.Core;
 using NewDatabase.Test.EntitiesTest;
+using NewDatabase.Test.Helpers;
 using Xunit;
 
 namespace NewDatabase.Test.TableTest
 {
-    public class TableInsertion
+    public class TableInsertion : TesteBase
     {
-        private readonly DataTest.DataTest _dataTest;
-
-        public TableInsertion()
-        {
-            _dataTest = new DataTest.DataTest();
-        }
-
-        [Fact]
+        [Fact(DisplayName = "Should Insert Well In Well Table")]
         public void ShouldInsertWellInWellTable()
         {
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id);
-
             var well = new Well(new Geometry(), new Trajectory());
 
             wellTable.Insert(well);
@@ -26,11 +17,9 @@ namespace NewDatabase.Test.TableTest
             Assert.Equal(well.Id, wellTable.Get(well.Id).Id);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should Insert Well In Well Table And Inserted Is A Copy")]
         public void ShouldInsertWellInWellTableAndInsertedIsACopy()
         {
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id);
-
             var well = new Well(new Geometry(), new Trajectory());
 
             wellTable.Insert(well);
@@ -39,11 +28,9 @@ namespace NewDatabase.Test.TableTest
             Assert.NotEqual(well, wellTable.Get(well.Id));
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should Throw Exception If The Same Entity Is Inserted")]
         public void ShouldThrowExceptionIfTheSameEntityIsInserted()
         {
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id);
-
             var well = new Well(new Geometry(), new Trajectory());
 
             wellTable.Insert(well);

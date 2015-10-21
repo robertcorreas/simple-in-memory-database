@@ -1,34 +1,17 @@
 ﻿using NewDatabase.Core;
 using NewDatabase.Test.EntitiesTest;
+using NewDatabase.Test.Helpers;
 using Newtonsoft.Json;
 using Xunit;
 
 namespace NewDatabase.Test.SerializationRequirements
 {
-    public class SerializationTest
+    public class SerializationTest : TesteBase
     {
-        private readonly DataTest.DataTest _dataTest;
-        private readonly Index _index;
-        private readonly Relation _relation;
-
-        #region Construtores
-
-        public SerializationTest()
-        {
-            _dataTest = new DataTest.DataTest();
-            _index = new Index();
-            _relation = new Relation();
-        }
-
-        #endregion
-
-        [Fact]
+        [Fact(DisplayName = "Should Serialize OneToOne")]
         public void ShouldSerializeOneToOne()
         {
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, _relation, _index);
-            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, _relation, _index);
-
-            _relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
             var geometry = new Geometry();
             var well = new Well(geometry, new Trajectory());
@@ -36,8 +19,8 @@ namespace NewDatabase.Test.SerializationRequirements
             geometryTable.Insert(geometry);
             wellTable.Insert(well);
 
-            var jsonData = JsonConvert.SerializeObject(_dataTest, Formatting.Indented);
-            var jsonIndex = JsonConvert.SerializeObject(_index, Formatting.Indented);
+            var jsonData = JsonConvert.SerializeObject(Data, Formatting.Indented);
+            var jsonIndex = JsonConvert.SerializeObject(Index, Formatting.Indented);
 
             var newData = JsonConvert.DeserializeObject<DataTest.DataTest>(jsonData);
             var newIndex = JsonConvert.DeserializeObject<Index>(jsonIndex);
@@ -63,14 +46,10 @@ namespace NewDatabase.Test.SerializationRequirements
             Assert.True(0 == newIndex.Count);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should Serialize OneToMany")]
         public void ShouldSerializeOneToMany()
         {
-            var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories, t => t.Id, _relation, _index);
-            var trajectoryPointTable = new Table<TrajectoryPoint>(_dataTest.TrajectoryPoints, tp => tp.Id, _relation,
-                _index);
-
-            _relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
+            Relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
 
             var trajectory = new Trajectory();
 
@@ -83,8 +62,8 @@ namespace NewDatabase.Test.SerializationRequirements
             trajectoryPointTable.Insert(tp2);
             trajectoryPointTable.Insert(tp3);
 
-            var jsonData = JsonConvert.SerializeObject(_dataTest, Formatting.Indented);
-            var jsonIndex = JsonConvert.SerializeObject(_index, Formatting.Indented);
+            var jsonData = JsonConvert.SerializeObject(Data, Formatting.Indented);
+            var jsonIndex = JsonConvert.SerializeObject(Index, Formatting.Indented);
 
             var newData = JsonConvert.DeserializeObject<DataTest.DataTest>(jsonData);
             var newIndex = JsonConvert.DeserializeObject<Index>(jsonIndex);
@@ -105,18 +84,12 @@ namespace NewDatabase.Test.SerializationRequirements
             Assert.True(0 == newTrajectoryPointTable.Count);
         }
 
-        [Fact(DisplayName = "Create a common scenario, serialize and cascate delete")]
+        [Fact(DisplayName = "Should Serialize With OneToMany And OneToOne")]
         public void ShouldSerializeWithOneToManyAndOneToOne()
         {
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, _relation, _index);
-            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, _relation, _index);
-            var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories, t => t.Id, _relation, _index);
-            var trajectoryPointTable = new Table<TrajectoryPoint>(_dataTest.TrajectoryPoints, tp => tp.Id, _relation,
-                _index);
-
-            _relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
-            _relation.CreateOneToOne(wellTable, trajectoryTable, w => w.Trajectory.Id);
-            _relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
+            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            Relation.CreateOneToOne(wellTable, trajectoryTable, w => w.Trajectory.Id);
+            Relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
 
             var geometry = new Geometry();
             var trajectory = new Trajectory();
@@ -140,8 +113,8 @@ namespace NewDatabase.Test.SerializationRequirements
             Assert.True(3 == trajectoryPointTable.Count);
 
 
-            var jsonData = JsonConvert.SerializeObject(_dataTest, Formatting.Indented);
-            var jsonIndex = JsonConvert.SerializeObject(_index, Formatting.Indented);
+            var jsonData = JsonConvert.SerializeObject(Data, Formatting.Indented);
+            var jsonIndex = JsonConvert.SerializeObject(Index, Formatting.Indented);
 
             var newData = JsonConvert.DeserializeObject<DataTest.DataTest>(jsonData);
             var newIndex = JsonConvert.DeserializeObject<Index>(jsonIndex);
@@ -171,21 +144,15 @@ namespace NewDatabase.Test.SerializationRequirements
             Assert.True(0 == newTrajectoryPointTable.Count);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should Serialize ManyToMany")]
         public void ShouldSerializeManyToMany()
         {
-            var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories, t => t.Id, _relation, _index);
-            var graphicTable = new Table<Graphic>(_dataTest.Graphics, g => g.Id, _relation, _index);
-            var trajectoryGraphicRelationalTable =
-                new Table<TrajectoryGraphicRelationalTable>(_dataTest.TrajectoryGraphicRelationalTables, tgr => tgr.Id,
-                    _relation, _index);
+            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
+                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
             var trajectory = new Trajectory();
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
-
-            _relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
             trajectoryTable.Insert(trajectory);
             graphicTable.Insert(graphic);
@@ -195,8 +162,8 @@ namespace NewDatabase.Test.SerializationRequirements
             Assert.True(1 == graphicTable.Count);
             Assert.True(1 == trajectoryGraphicRelationalTable.Count);
 
-            var jsonData = JsonConvert.SerializeObject(_dataTest, Formatting.Indented);
-            var jsonIndex = JsonConvert.SerializeObject(_index, Formatting.Indented);
+            var jsonData = JsonConvert.SerializeObject(Data, Formatting.Indented);
+            var jsonIndex = JsonConvert.SerializeObject(Index, Formatting.Indented);
 
             var newData = JsonConvert.DeserializeObject<DataTest.DataTest>(jsonData);
             var newIndex = JsonConvert.DeserializeObject<Index>(jsonIndex);
@@ -218,23 +185,13 @@ namespace NewDatabase.Test.SerializationRequirements
             Assert.True(0 == newTrajectoryGraphicRelationalTable.Count);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should Serialize With OneToMany And OneToOne And ManyToMany")]
         public void ShouldSerializeWithOneToManyAndOneToOneAndManyToMany()
         {
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, _relation, _index);
-            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, _relation, _index);
-            var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories, t => t.Id, _relation, _index);
-            var trajectoryPointTable = new Table<TrajectoryPoint>(_dataTest.TrajectoryPoints, tp => tp.Id, _relation,
-                _index);
-            var graphicTable = new Table<Graphic>(_dataTest.Graphics, g => g.Id, _relation, _index);
-            var trajectoryGraphicRelationalTable =
-                new Table<TrajectoryGraphicRelationalTable>(_dataTest.TrajectoryGraphicRelationalTables, tgr => tgr.Id,
-                    _relation, _index);
-
-            _relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
-            _relation.CreateOneToOne(wellTable, trajectoryTable, w => w.Trajectory.Id);
-            _relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
-            _relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
+            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            Relation.CreateOneToOne(wellTable, trajectoryTable, w => w.Trajectory.Id);
+            Relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
+            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
                 tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
 
@@ -267,8 +224,8 @@ namespace NewDatabase.Test.SerializationRequirements
             Assert.True(1 == graphicTable.Count);
             Assert.True(1 == trajectoryGraphicRelationalTable.Count);
 
-            var jsonData = JsonConvert.SerializeObject(_dataTest, Formatting.Indented);
-            var jsonIndex = JsonConvert.SerializeObject(_index, Formatting.Indented);
+            var jsonData = JsonConvert.SerializeObject(Data, Formatting.Indented);
+            var jsonIndex = JsonConvert.SerializeObject(Index, Formatting.Indented);
 
             var newData = JsonConvert.DeserializeObject<DataTest.DataTest>(jsonData);
             var newIndex = JsonConvert.DeserializeObject<Index>(jsonIndex);

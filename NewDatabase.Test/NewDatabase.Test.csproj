@@ -72,6 +72,8 @@
     <Compile Include="EntitiesTest\TrajectoryGraphicRelationalTable.cs" />
     <Compile Include="EntitiesTest\TrajectoryPoint.cs" />
     <Compile Include="EntitiesTest\Trajectory.cs" />
+    <Compile Include="Helpers\TableFactoryHelper.cs" />
+    <Compile Include="Helpers\TesteBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelationTest\ManyToManyTest\ManyToManyInsertTest.cs" />
     <Compile Include="RelationTest\ManyToManyTest\ManyToManyUpdateTest.cs" />

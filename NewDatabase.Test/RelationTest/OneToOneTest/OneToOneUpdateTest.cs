@@ -1,34 +1,16 @@
 ﻿using System;
-using NewDatabase.Core;
 using NewDatabase.Test.EntitiesTest;
+using NewDatabase.Test.Helpers;
 using Xunit;
 
 namespace NewDatabase.Test.RelationTest.OneToOneTest
 {
-    public class OneToOneUpdateTest
+    public class OneToOneUpdateTest : TesteBase
     {
-        private readonly DataTest.DataTest _dataTest;
-        private readonly Index _index;
-        private readonly Relation _relation;
-
-        #region Construtores
-
-        public OneToOneUpdateTest()
-        {
-            _dataTest = new DataTest.DataTest();
-            _index = new Index();
-            _relation = new Relation();
-        }
-
-        #endregion
-
-        [Fact]
+        [Fact(DisplayName = "Should Update If Fk Satisfy")]
         public void ShouldUpdateIfFkSatisfy()
         {
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, _relation, _index);
-            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, _relation, _index);
-
-            _relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
             var geometry = new Geometry();
             var geometry2 = new Geometry();
@@ -40,7 +22,7 @@ namespace NewDatabase.Test.RelationTest.OneToOneTest
 
             Assert.True(1 == wellTable.Count);
             Assert.True(2 == geometryTable.Count);
-            Assert.True(3 == _index.Count);
+            Assert.True(3 == Index.Count);
 
             Assert.Equal(well.Id, wellTable.Get(well.Id).Id);
             Assert.Equal(geometry.Id, wellTable.Get(well.Id).Geometry.Id);
@@ -53,7 +35,7 @@ namespace NewDatabase.Test.RelationTest.OneToOneTest
 
             Assert.True(1 == wellTable.Count);
             Assert.True(2 == geometryTable.Count);
-            Assert.True(3 == _index.Count);
+            Assert.True(3 == Index.Count);
 
             Assert.Equal(well.Id, wellTable.Get(well.Id).Id);
             Assert.Equal(geometry2.Id, wellTable.Get(well.Id).Geometry.Id);
@@ -61,13 +43,10 @@ namespace NewDatabase.Test.RelationTest.OneToOneTest
             Assert.Equal(geometry2.Id, geometryTable.Get(geometry2.Id).Id);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should Throw Exception Update If Fk Not Satisfy (OneToOne)")]
         public void ShouldThrowExceptionUpdateIfFkNotSatisfy()
         {
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, _relation, _index);
-            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, _relation, _index);
-
-            _relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
             var geometry = new Geometry();
             var well = new Well(geometry, new Trajectory());
@@ -77,7 +56,7 @@ namespace NewDatabase.Test.RelationTest.OneToOneTest
 
             Assert.True(1 == wellTable.Count);
             Assert.True(1 == geometryTable.Count);
-            Assert.True(2 == _index.Count);
+            Assert.True(2 == Index.Count);
 
             Assert.Equal(well.Id, wellTable.Get(well.Id).Id);
             Assert.Equal(geometry.Id, wellTable.Get(well.Id).Geometry.Id);

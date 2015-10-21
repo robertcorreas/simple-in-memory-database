@@ -1,29 +1,16 @@
 ﻿using System;
-using NewDatabase.Core;
 using NewDatabase.Test.EntitiesTest;
+using NewDatabase.Test.Helpers;
 using Xunit;
 
 namespace NewDatabase.Test.RelationTest.OneToOneTest
 {
-    public class OneToOneInsertTest
+    public class OneToOneInsertTest : TesteBase
     {
-        private readonly DataTest.DataTest _dataTest;
-
-        public OneToOneInsertTest()
-        {
-            _dataTest = new DataTest.DataTest();
-        }
-
-        [Fact]
+        [Fact(DisplayName = "Should Throw Exception When Fk Dependency Not Satisfy (OneToOne)")]
         public void ShouldThrowExceptionWhenFkDependencyNotSatisfy()
         {
-            var relation = new Relation();
-            var index = new Index();
-
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, relation, index);
-            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, relation, index);
-
-            relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
             var geometria = new Geometry();
             var well = new Well(geometria, new Trajectory());
@@ -34,16 +21,10 @@ namespace NewDatabase.Test.RelationTest.OneToOneTest
             Assert.Equal("Invalid FK", ex.Message);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should Insert If Fk Dependency Satisfy (OneToOne)")]
         public void ShouldInsertIfFkDependencySatisfy()
         {
-            var relation = new Relation();
-            var index = new Index();
-
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, relation, index);
-            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, relation, index);
-
-            relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
             var geometry = new Geometry();
             var well = new Well(geometry, new Trajectory());

@@ -6,12 +6,20 @@ namespace NewDatabase.Core
 {
     public class Relation
     {
+        #region Construtores
+
         public Relation()
         {
             Relations = new Dictionary<Type, List<RelationProperties>>();
         }
 
+        #endregion
+
+        #region Propriedades
+
         public Dictionary<Type, List<RelationProperties>> Relations { get; set; }
+
+        #endregion
 
         public void CreateOneToOne<T1, T2>(Table<T1> tableWithDependency, Table<T2> tableDependency,
             Expression<Func<T1, Guid>> foreignKey, bool cascateDeletion = true)

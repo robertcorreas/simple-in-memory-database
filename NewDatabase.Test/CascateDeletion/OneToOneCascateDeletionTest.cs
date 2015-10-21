@@ -1,28 +1,15 @@
-﻿using NewDatabase.Core;
-using NewDatabase.Test.EntitiesTest;
+﻿using NewDatabase.Test.EntitiesTest;
+using NewDatabase.Test.Helpers;
 using Xunit;
 
 namespace NewDatabase.Test.CascateDeletion
 {
-    public class OneToOneCascateDeletionTest
+    public class OneToOneCascateDeletionTest : TesteBase
     {
-        private readonly DataTest.DataTest _dataTest;
-
-        public OneToOneCascateDeletionTest()
-        {
-            _dataTest = new DataTest.DataTest();
-        }
-
-        [Fact]
+        [Fact(DisplayName = "Should Delete In Cascate (OneToOne)")]
         public void ShouldDeleteInCascate()
         {
-            var index = new Index();
-            var relation = new Relation();
-
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, relation, index);
-            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, relation, index);
-
-            relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
             var geometry = new Geometry();
             var well = new Well(geometry, new Trajectory());
@@ -34,19 +21,13 @@ namespace NewDatabase.Test.CascateDeletion
 
             Assert.True(0 == wellTable.Count);
             Assert.True(0 == geometryTable.Count);
-            Assert.True(0 == index.Count);
+            Assert.True(0 == Index.Count);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should Not Delete In Cascate (OneToOne)")]
         public void ShouldNotDeleteInCascate()
         {
-            var index = new Index();
-            var relation = new Relation();
-
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, relation, index);
-            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, relation, index);
-
-            relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id, false);
+            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id, false);
 
             var geometry = new Geometry();
             var well = new Well(geometry, new Trajectory());
@@ -60,16 +41,10 @@ namespace NewDatabase.Test.CascateDeletion
             Assert.True(1 == geometryTable.Count);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should Delete In Cascate With Multiple OneToOne")]
         public void ShouldDeleteInCascateWithMultipleOneToOne()
         {
-            var index = new Index();
-            var relation = new Relation();
-
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, relation, index);
-            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, relation, index);
-
-            relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
             var geometry1 = new Geometry();
             var well1 = new Well(geometry1, new Trajectory());
@@ -85,13 +60,13 @@ namespace NewDatabase.Test.CascateDeletion
 
             Assert.True(2 == wellTable.Count);
             Assert.True(2 == geometryTable.Count);
-            Assert.True(4 == index.Count);
+            Assert.True(4 == Index.Count);
 
             wellTable.Delete(well1);
 
             Assert.True(1 == wellTable.Count);
             Assert.True(1 == geometryTable.Count);
-            Assert.True(2 == index.Count);
+            Assert.True(2 == Index.Count);
 
             Assert.Equal(well2.Id, wellTable.Get(well2.Id).Id);
             Assert.Equal(geometry2.Id, wellTable.Get(well2.Id).Geometry.Id);

@@ -13,6 +13,8 @@ namespace NewDatabase.Core
         private readonly Relation _relation;
         private readonly Dictionary<Guid, T> _tuplas;
 
+        #region Construtores
+
         public Table(Dictionary<Guid, T> tuplas, Expression<Func<T, Guid>> primaryKey, Relation relation = null,
             Index index = null)
         {
@@ -22,17 +24,23 @@ namespace NewDatabase.Core
             _relation = relation ?? new Relation();
         }
 
+        #endregion
+
+        #region Propriedades
+
         public int Count
         {
             get { return _tuplas.Count; }
         }
+
+        #endregion
 
         public void Insert(T entity)
         {
             if (_tuplas.ContainsKey(_primaryKey(entity)))
                 throw new ArgumentException("Already exist an entity with this id");
 
-            ValidateFk(entity, this.GetType());
+            ValidateFk(entity, GetType());
 
             var entityCopy = ExpressionTreeCloner.DeepFieldClone(entity);
 
@@ -129,7 +137,7 @@ namespace NewDatabase.Core
             if (!_tuplas.ContainsKey(_primaryKey(entity)))
                 throw new ArgumentException("Invalid entity");
 
-            ValidateFk(entity,this.GetType());
+            ValidateFk(entity, GetType());
 
             _tuplas[_primaryKey(entity)] = entity;
         }

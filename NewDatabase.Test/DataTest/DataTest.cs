@@ -7,6 +7,8 @@ namespace NewDatabase.Test.DataTest
 {
     public class DataTest : Data
     {
+        #region Construtores
+
         public DataTest()
         {
             Wells = new Dictionary<Guid, Well>();
@@ -17,11 +19,17 @@ namespace NewDatabase.Test.DataTest
             TrajectoryGraphicRelationalTables = new Dictionary<Guid, TrajectoryGraphicRelationalTable>();
         }
 
+        #endregion
+
+        #region Propriedades
+
         public Dictionary<Guid, Well> Wells { get; set; }
         public Dictionary<Guid, Geometry> Geometries { get; set; }
         public Dictionary<Guid, Trajectory> Trajectories { get; set; }
         public Dictionary<Guid, TrajectoryPoint> TrajectoryPoints { get; set; }
         public Dictionary<Guid, Graphic> Graphics { get; set; }
         public Dictionary<Guid, TrajectoryGraphicRelationalTable> TrajectoryGraphicRelationalTables { get; set; }
+
+        #endregion
     }
 }

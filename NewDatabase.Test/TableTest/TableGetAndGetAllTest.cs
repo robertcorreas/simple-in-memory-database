@@ -1,27 +1,14 @@
-﻿using NewDatabase.Core;
-using NewDatabase.Test.EntitiesTest;
+﻿using NewDatabase.Test.EntitiesTest;
+using NewDatabase.Test.Helpers;
 using Xunit;
 
 namespace NewDatabase.Test.TableTest
 {
-    public class TableGetAndGetAllTest
+    public class TableGetAndGetAllTest : TesteBase
     {
-        private readonly DataTest.DataTest _dataTest;
-        private readonly Index _index;
-        private readonly Relation _relation;
-
-        public TableGetAndGetAllTest()
-        {
-            _dataTest = new DataTest.DataTest();
-            _relation = new Relation();
-            _index = new Index();
-        }
-
-        [Fact]
+        [Fact(DisplayName = "Should Return Copy In Get Method")]
         public void ShouldReturnCopyInGetMethod()
         {
-            var graphicTable = new Table<Graphic>(_dataTest.Graphics, g => g.Id, _relation, _index);
-
             var graphic = new Graphic {Title = "title1"};
 
             graphicTable.Insert(graphic);
@@ -34,11 +21,9 @@ namespace NewDatabase.Test.TableTest
             Assert.NotEqual(graphicByGet.Title, graphicTable.Get(graphic.Id).Title);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should Return Copies In GetAll Method")]
         public void ShouldReturnCopiesInGetAllMethod()
         {
-            var graphicTable = new Table<Graphic>(_dataTest.Graphics, g => g.Id, _relation, _index);
-
             var graphic1 = new Graphic {Title = "title1"};
             var graphic2 = new Graphic {Title = "title2"};
             var graphic3 = new Graphic {Title = "title3"};

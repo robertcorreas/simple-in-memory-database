@@ -1,38 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NewDatabase.Core;
 using NewDatabase.Test.EntitiesTest;
+using NewDatabase.Test.Helpers;
 using Xunit;
 
 namespace NewDatabase.Test.RelationTest.OneToManyTest
 {
-    public class OneToManyUpdateTest
+    public class OneToManyUpdateTest : TesteBase
     {
-        private readonly DataTest.DataTest _dataTest;
-        private readonly Index _index;
-        private readonly Relation _relation;
-
-        #region Construtores
-
-        public OneToManyUpdateTest()
-        {
-            _dataTest = new DataTest.DataTest();
-            _index = new Index();
-            _relation = new Relation();
-        }
-
-        #endregion
         [Fact(DisplayName = "Update if Fk Satisfy (OneToMany)")]
         public void ShouldUpdateIfFkSatisfy()
         {
-            var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories, t => t.Id, _relation, _index);
-            var trajectoryPointTable = new Table<TrajectoryPoint>(_dataTest.TrajectoryPoints, tp => tp.Id, _relation,
-                _index);
-
-            _relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
+            Relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
 
             var trajectory = new Trajectory();
             var trajectory2 = new Trajectory();
@@ -62,7 +40,7 @@ namespace NewDatabase.Test.RelationTest.OneToManyTest
             var countForTrajectory2 = 0;
             foreach (var trajectoryPoint in trajectoryPointTable.GetAll())
             {
-                if(trajectory.Id== trajectoryPoint.Trajectory.Id)
+                if (trajectory.Id == trajectoryPoint.Trajectory.Id)
                     countForTrajectory++;
 
                 if (trajectory2.Id == trajectoryPoint.Trajectory.Id)
@@ -70,17 +48,13 @@ namespace NewDatabase.Test.RelationTest.OneToManyTest
             }
 
             Assert.Equal(2, countForTrajectory);
-            Assert.Equal(1,countForTrajectory2);
-
+            Assert.Equal(1, countForTrajectory2);
         }
+
         [Fact(DisplayName = "Throw Exception When Fk Dependency Not Satisfy (OneToMany)")]
         public void ShouldThrowExceptionWhenFkDependencyNotSatisfy()
         {
-            var trajectoryTable = new Table<Trajectory>(_dataTest.Trajectories, t => t.Id, _relation, _index);
-            var trajectoryPointTable = new Table<TrajectoryPoint>(_dataTest.TrajectoryPoints, tp => tp.Id, _relation,
-                _index);
-
-            _relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
+            Relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
 
             var trajectory = new Trajectory();
 

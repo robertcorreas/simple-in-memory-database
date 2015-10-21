@@ -5,10 +5,16 @@ namespace NewDatabase.Core
 {
     public class Index
     {
+        #region Construtores
+
         public Index()
         {
             Indexes = new Dictionary<Guid, bool>();
         }
+
+        #endregion
+
+        #region Propriedades
 
         public Dictionary<Guid, bool> Indexes { get; private set; }
 
@@ -16,6 +22,8 @@ namespace NewDatabase.Core
         {
             get { return Indexes.Count; }
         }
+
+        #endregion
 
         public bool Contains(Guid foreignKey)
         {
