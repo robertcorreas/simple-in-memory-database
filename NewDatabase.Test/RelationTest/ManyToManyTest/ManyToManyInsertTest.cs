@@ -32,6 +32,8 @@ namespace NewDatabase.Test.RelationTest.ManyToManyTest
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
 
+            _relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
+               tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
             trajectoryTable.Insert(trajectory);
             graphicTable.Insert(graphic);

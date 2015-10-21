@@ -113,7 +113,6 @@ namespace NewDatabase.Test.RelationTest.OneToManyTest
             {
                 Assert.Equal(trajectory.Id, trajectoryPoint.Trajectory.Id);
             }
-            
         }
     }
 }

@@ -10,7 +10,7 @@ namespace NewDatabase.Test.EntitiesTest
             Graphic = graphic;
         }
 
-        public Trajectory Trajectory { get; private set; }
+        public Trajectory Trajectory { get; set; }
         public Graphic Graphic { get; private set; }
     }
 }
