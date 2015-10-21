@@ -32,8 +32,16 @@ namespace NewDatabase.Core
             if (_tuplas.ContainsKey(_primaryKey(entity)))
                 throw new ArgumentException("Already exist an entity with this id");
 
-            var type = GetType();
+            ValidateFk(entity, this.GetType());
 
+            var entityCopy = ExpressionTreeCloner.DeepFieldClone(entity);
+
+            _tuplas.Add(_primaryKey(entity), entityCopy);
+            _index.CreateIndex(_primaryKey(entityCopy));
+        }
+
+        private void ValidateFk(T entity, Type type)
+        {
             var relationProperties = _relation.Get(type);
 
             foreach (var relationPropertie in relationProperties)
@@ -54,12 +62,6 @@ namespace NewDatabase.Core
                         throw new InvalidOperationException("Invalid FK");
                 }
             }
-
-
-            var entityCopy = ExpressionTreeCloner.DeepFieldClone(entity);
-
-            _tuplas.Add(_primaryKey(entity), entityCopy);
-            _index.CreateIndex(_primaryKey(entityCopy));
         }
 
         public T Get(Guid primaryKey)
@@ -126,6 +128,8 @@ namespace NewDatabase.Core
         {
             if (!_tuplas.ContainsKey(_primaryKey(entity)))
                 throw new ArgumentException("Invalid entity");
+
+            ValidateFk(entity,this.GetType());
 
             _tuplas[_primaryKey(entity)] = entity;
         }

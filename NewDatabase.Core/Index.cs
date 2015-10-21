@@ -10,7 +10,7 @@ namespace NewDatabase.Core
             Indexes = new Dictionary<Guid, bool>();
         }
 
-        public Dictionary<Guid, bool> Indexes { get; }
+        public Dictionary<Guid, bool> Indexes { get; private set; }
 
         public int Count
         {

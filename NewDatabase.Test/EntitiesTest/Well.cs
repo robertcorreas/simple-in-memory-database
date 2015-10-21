@@ -10,7 +10,7 @@ namespace NewDatabase.Test.EntitiesTest
             Trajectory = trajectory;
         }
 
-        public Geometry Geometry { get; private set; }
+        public Geometry Geometry { get;  set; }
         public Trajectory Trajectory { get; private set; }
     }
 }

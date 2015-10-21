@@ -75,7 +75,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelationTest\ManyToManyTest\ManyToManyInsertTest.cs" />
     <Compile Include="RelationTest\OneToManyTest\OneToManyInsertTest.cs" />
+    <Compile Include="RelationTest\OneToManyTest\OneToManyUpdateTest.cs" />
     <Compile Include="RelationTest\OneToOneTest\OneToOneInsertTest.cs" />
+    <Compile Include="RelationTest\OneToOneTest\OneToOneUpdateTest.cs" />
     <Compile Include="SerializationRequirements\SerializationTest.cs" />
     <Compile Include="TableTest\TableCreationTests.cs" />
     <Compile Include="EntitiesTest\Well.cs" />

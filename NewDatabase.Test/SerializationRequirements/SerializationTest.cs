@@ -11,6 +11,8 @@ namespace NewDatabase.Test.SerializationRequirements
         private readonly Index _index;
         private readonly Relation _relation;
 
+        #region Construtores
+
         public SerializationTest()
         {
             _dataTest = new DataTest.DataTest();
@@ -18,16 +20,15 @@ namespace NewDatabase.Test.SerializationRequirements
             _relation = new Relation();
         }
 
+        #endregion
+
         [Fact]
         public void ShouldSerializeOneToOne()
         {
-            var index = new Index();
-            var relation = new Relation();
+            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, _relation, _index);
+            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, _relation, _index);
 
-            var wellTable = new Table<Well>(_dataTest.Wells, w => w.Id, relation, index);
-            var geometryTable = new Table<Geometry>(_dataTest.Geometries, g => g.Id, relation, index);
-
-            relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            _relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
 
             var geometry = new Geometry();
             var well = new Well(geometry, new Trajectory());
@@ -35,14 +36,12 @@ namespace NewDatabase.Test.SerializationRequirements
             geometryTable.Insert(geometry);
             wellTable.Insert(well);
 
-
             var jsonData = JsonConvert.SerializeObject(_dataTest, Formatting.Indented);
-            var jsonIndex = JsonConvert.SerializeObject(index, Formatting.Indented);
+            var jsonIndex = JsonConvert.SerializeObject(_index, Formatting.Indented);
 
             var newData = JsonConvert.DeserializeObject<DataTest.DataTest>(jsonData);
             var newIndex = JsonConvert.DeserializeObject<Index>(jsonIndex);
             var newRelation = new Relation();
-
 
             var newWellTable = new Table<Well>(newData.Wells, w => w.Id, newRelation, newIndex);
             var newGeometryTable = new Table<Geometry>(newData.Geometries, g => g.Id, newRelation, newIndex);
