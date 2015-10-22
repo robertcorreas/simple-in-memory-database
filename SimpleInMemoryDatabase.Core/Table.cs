@@ -142,9 +142,9 @@ namespace SimpleInMemoryDatabase.Core
             _tuplas[_primaryKey(entity)] = entity;
         }
 
-        public List<T> Search(Func<T, bool> predicate)
+        public IEnumerable<T> Search(Func<T, bool> predicate)
         {
-            return _tuplas.Values.Where(predicate).Select(ExpressionTreeCloner.DeepFieldClone).ToList();
+            return _tuplas.Values.Where(predicate).Select(ExpressionTreeCloner.DeepFieldClone);
         }
     }
 }

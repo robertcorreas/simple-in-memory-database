@@ -34,7 +34,7 @@ namespace SimpleInMemoryDatabase.Test.TableTest
             trajectoryPointTable.Insert(tp5);
             trajectoryPointTable.Insert(tp6);
 
-            var founded = trajectoryPointTable.Search(tp => tp.Trajectory.Id == trajectory2.Id);
+            var founded = trajectoryPointTable.Search(tp => tp.Trajectory.Id == trajectory2.Id).ToList();
 
             var expected = new List<TrajectoryPoint>()
             {
