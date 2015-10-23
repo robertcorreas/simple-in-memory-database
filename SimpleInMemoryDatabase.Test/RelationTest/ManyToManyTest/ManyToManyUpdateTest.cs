@@ -6,7 +6,7 @@ using Xunit;
 
 namespace SimpleInMemoryDatabase.Test.RelationTest.ManyToManyTest
 {
-    public class ManyToManyUpdateTest : TesteBase
+    public class ManyToManyUpdateTest : TestBase
     {
         [Fact(DisplayName = "Should Update if Fk Satisfy (ManyToMany)")]
         public void ShouldUpdateIfFkSatisfy()

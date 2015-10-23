@@ -5,7 +5,7 @@ using Xunit;
 
 namespace SimpleInMemoryDatabase.Test.RelationTest.OneToOneTest
 {
-    public class OneToOneInsertTest : TesteBase
+    public class OneToOneInsertTest : TestBase
     {
         [Fact(DisplayName = "Should Throw Exception When Fk Dependency Not Satisfy (OneToOne)")]
         public void ShouldThrowExceptionWhenFkDependencyNotSatisfy()

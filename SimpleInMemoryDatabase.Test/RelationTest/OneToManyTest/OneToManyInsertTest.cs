@@ -5,7 +5,7 @@ using Xunit;
 
 namespace SimpleInMemoryDatabase.Test.RelationTest.OneToManyTest
 {
-    public class OneToManyInsertTest : TesteBase
+    public class OneToManyInsertTest : TestBase
     {
         [Fact(DisplayName = "Should Insert OneToMany If Fk Is Satisfy")]
         public void ShouldInsertOneToManyIfFkIsSatisfy()

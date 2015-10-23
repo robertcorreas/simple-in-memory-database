@@ -3,7 +3,7 @@ using Xunit;
 
 namespace SimpleInMemoryDatabase.Test.TableTest
 {
-    public class TableCreationTests : TesteBase
+    public class TableCreationTests : TestBase
     {
         [Fact(DisplayName = "Should Create WellTable With Primary Key")]
         public void ShouldCreateWellTableWithPrimaryKey()

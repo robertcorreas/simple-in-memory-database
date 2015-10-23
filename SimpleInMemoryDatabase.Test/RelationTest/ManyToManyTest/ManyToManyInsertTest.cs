@@ -6,7 +6,7 @@ using Xunit;
 
 namespace SimpleInMemoryDatabase.Test.RelationTest.ManyToManyTest
 {
-    public class ManyToManyInsertTest : TesteBase
+    public class ManyToManyInsertTest : TestBase
     {
         [Fact(DisplayName = "Should Insert ManyToMany If Fk Satisfy")]
         public void ShouldInsertManyToManyIfFkSatisfy()

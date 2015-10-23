@@ -3,7 +3,7 @@ using SimpleInMemoryDatabase.Test.EntitiesTest;
 
 namespace SimpleInMemoryDatabase.Test.Helpers
 {
-    public class TesteBase
+    public class TestBase
     {
         protected readonly TableFactoryHelper _tableFactoryHelper;
         protected readonly Table<Geometry> geometryTable;
@@ -15,7 +15,7 @@ namespace SimpleInMemoryDatabase.Test.Helpers
 
         #region Construtores
 
-        public TesteBase()
+        public TestBase()
         {
             _tableFactoryHelper = new TableFactoryHelper(new DataTest.DataTest(), new Index(), new Relation());
 

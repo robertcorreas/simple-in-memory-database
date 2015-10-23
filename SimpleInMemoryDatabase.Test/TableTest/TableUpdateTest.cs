@@ -5,7 +5,7 @@ using Xunit;
 
 namespace SimpleInMemoryDatabase.Test.TableTest
 {
-    public class TableUpdateTest : TesteBase
+    public class TableUpdateTest : TestBase
     {
         [Fact(DisplayName = "Should Update")]
         public void ShouldUpdate()

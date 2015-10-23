@@ -6,7 +6,7 @@ using Xunit;
 
 namespace SimpleInMemoryDatabase.Test.SerializationRequirements
 {
-    public class SerializationTest : TesteBase
+    public class SerializationTest : TestBase
     {
         [Fact(DisplayName = "Should Serialize OneToOne")]
         public void ShouldSerializeOneToOne()

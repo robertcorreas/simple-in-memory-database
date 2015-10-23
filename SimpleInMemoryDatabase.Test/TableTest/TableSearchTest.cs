@@ -9,7 +9,7 @@ using Xunit;
 
 namespace SimpleInMemoryDatabase.Test.TableTest
 {
-    public class TableSearchTest : TesteBase
+    public class TableSearchTest : TestBase
     {
         [Fact(DisplayName = "Should Search")]
         public void ShouldSearch()

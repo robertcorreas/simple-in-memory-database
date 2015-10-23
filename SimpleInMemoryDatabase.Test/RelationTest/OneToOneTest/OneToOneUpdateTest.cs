@@ -5,7 +5,7 @@ using Xunit;
 
 namespace SimpleInMemoryDatabase.Test.RelationTest.OneToOneTest
 {
-    public class OneToOneUpdateTest : TesteBase
+    public class OneToOneUpdateTest : TestBase
     {
         [Fact(DisplayName = "Should Update If Fk Satisfy")]
         public void ShouldUpdateIfFkSatisfy()

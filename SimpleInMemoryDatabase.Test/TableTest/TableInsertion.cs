@@ -5,7 +5,7 @@ using Xunit;
 
 namespace SimpleInMemoryDatabase.Test.TableTest
 {
-    public class TableInsertion : TesteBase
+    public class TableInsertion : TestBase
     {
         [Fact(DisplayName = "Should Insert Well In Well Table")]
         public void ShouldInsertWellInWellTable()

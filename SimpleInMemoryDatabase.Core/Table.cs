@@ -11,7 +11,7 @@ namespace SimpleInMemoryDatabase.Core
         private readonly Index _index;
         private readonly Func<T, Guid> _primaryKey;
         private readonly Relation _relation;
-        private readonly Dictionary<Guid, T> _tuplas;
+        private readonly Dictionary<Guid, T> _tuples;
 
         #region Construtores
 
@@ -19,7 +19,7 @@ namespace SimpleInMemoryDatabase.Core
             Index index = null)
         {
             _primaryKey = primaryKey.Compile();
-            _tuplas = tuplas;
+            _tuples = tuplas;
             _index = index ?? new Index();
             _relation = relation ?? new Relation();
         }
@@ -30,22 +30,30 @@ namespace SimpleInMemoryDatabase.Core
 
         public int Count
         {
-            get { return _tuplas.Count; }
+            get { return _tuples.Count; }
         }
 
         #endregion
 
         public void Insert(T entity)
         {
-            if (_tuplas.ContainsKey(_primaryKey(entity)))
+            if (_tuples.ContainsKey(_primaryKey(entity)))
                 throw new ArgumentException("Already exist an entity with this id");
 
             ValidateFk(entity, GetType());
 
             var entityCopy = ExpressionTreeCloner.DeepFieldClone(entity);
 
-            _tuplas.Add(_primaryKey(entity), entityCopy);
+            _tuples.Add(_primaryKey(entity), entityCopy);
             _index.CreateIndex(_primaryKey(entityCopy));
+        }
+
+        public void Insert(IEnumerable<T> entities)
+        {
+            foreach (var entity in entities)
+            {
+                Insert(entity);
+            }
         }
 
         private void ValidateFk(T entity, Type type)
@@ -74,12 +82,12 @@ namespace SimpleInMemoryDatabase.Core
 
         public T Get(Guid primaryKey)
         {
-            return ExpressionTreeCloner.DeepFieldClone(_tuplas[primaryKey]);
+            return ExpressionTreeCloner.DeepFieldClone(_tuples[primaryKey]);
         }
 
         public void Delete(Guid primaryKey)
         {
-            var entity = _tuplas[primaryKey];
+            var entity = _tuples[primaryKey];
             var tableType = GetType();
 
             var relationProperties = _relation.Get(tableType);
@@ -107,7 +115,7 @@ namespace SimpleInMemoryDatabase.Core
                 }
             }
 
-            _tuplas.Remove(primaryKey);
+            _tuples.Remove(primaryKey);
             _index.DeleteIndex(primaryKey);
         }
 
@@ -118,33 +126,49 @@ namespace SimpleInMemoryDatabase.Core
             Delete(primaryKey);
         }
 
+        public void Delete(IEnumerable<T> entities)
+        {
+            foreach (var entity in entities)
+            {
+                Delete(entity);
+            }
+        }
+
+        public void Delete(IEnumerable<T> entities, Func<T, bool> query)
+        {
+            foreach (var entity in entities.Where(query))
+            {
+                Delete(entity);
+            }
+        }
+
         public List<T> GetAll()
         {
-            return _tuplas.Values.Select<T, T>(ExpressionTreeCloner.DeepFieldClone).ToList();
+            return _tuples.Values.Select<T, T>(ExpressionTreeCloner.DeepFieldClone).ToList();
         }
 
         public void Delete(Func<T, bool> query)
         {
-            var toRemove = _tuplas.Values.Where(query).ToArray();
+            var toRemove = _tuples.Values.Where(query).ToArray();
             foreach (var t in toRemove)
             {
-                _tuplas.Remove(t.Id);
+                _tuples.Remove(t.Id);
             }
         }
 
         public void Update(T entity)
         {
-            if (!_tuplas.ContainsKey(_primaryKey(entity)))
+            if (!_tuples.ContainsKey(_primaryKey(entity)))
                 throw new ArgumentException("Invalid entity");
 
             ValidateFk(entity, GetType());
 
-            _tuplas[_primaryKey(entity)] = entity;
+            _tuples[_primaryKey(entity)] = entity;
         }
 
         public IEnumerable<T> Search(Func<T, bool> predicate)
         {
-            return _tuplas.Values.Where(predicate).Select(ExpressionTreeCloner.DeepFieldClone);
+            return _tuples.Values.Where(predicate).Select(ExpressionTreeCloner.DeepFieldClone);
         }
     }
 }

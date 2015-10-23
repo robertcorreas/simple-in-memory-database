@@ -4,7 +4,7 @@ using Xunit;
 
 namespace SimpleInMemoryDatabase.Test.TableTest
 {
-    public class TableGetAndGetAllTest : TesteBase
+    public class TableGetAndGetAllTest : TestBase
     {
         [Fact(DisplayName = "Should Return Copy In Get Method")]
         public void ShouldReturnCopyInGetMethod()
