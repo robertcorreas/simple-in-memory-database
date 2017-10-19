@@ -5,7 +5,7 @@ using SimpleInMemoryDatabase.Tests.EntitiesTest;
 
 namespace SimpleInMemoryDatabase.Tests.DataTest
 {
-    public class DataTest : Data
+    public class DataTest
     {
         #region Construtores
 

@@ -9,35 +9,32 @@ namespace SimpleInMemoryDatabase.Core
 
         public Index()
         {
-            Indexes = new Dictionary<Guid, bool>();
+            _indexes = new HashSet<Guid>();
         }
 
         #endregion
 
         #region Propriedades
 
-        public Dictionary<Guid, bool> Indexes { get; private set; }
+        private HashSet<Guid> _indexes;
 
-        public int Count
-        {
-            get { return Indexes.Count; }
-        }
+        public int Count => _indexes.Count;
 
         #endregion
 
         public bool Contains(Guid foreignKey)
         {
-            return Indexes.ContainsKey(foreignKey);
+            return _indexes.Contains(foreignKey);
         }
 
         public void CreateIndex(Guid id)
         {
-            Indexes.Add(id, true);
+            _indexes.Add(id);
         }
 
         public void DeleteIndex(Guid primaryKey)
         {
-            Indexes.Remove(primaryKey);
+            _indexes.Remove(primaryKey);
         }
     }
 }

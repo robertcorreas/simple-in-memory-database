@@ -10,7 +10,7 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
         [Fact(DisplayName = "Should Update")]
         public void ShouldUpdate()
         {
-            var graphic = new Graphic {Title = "title1"};
+            var graphic = new Graphic { Title = "title1" };
 
             graphicTable.Insert(graphic);
 
@@ -25,7 +25,7 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
         [Fact(DisplayName = "Should Throw Exception When Update With Invalid Entity")]
         public void ShouldThrowExceptionWhenUpdateWithInvalidEntity()
         {
-            var graphic = new Graphic {Title = "title1"};
+            var graphic = new Graphic { Title = "title1" };
 
             graphicTable.Insert(graphic);
 

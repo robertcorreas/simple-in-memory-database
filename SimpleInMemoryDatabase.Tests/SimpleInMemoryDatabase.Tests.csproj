@@ -80,7 +80,6 @@
     <Compile Include="RelationTest\OneToManyTest\OneToManyUpdateTest.cs" />
     <Compile Include="RelationTest\OneToOneTest\OneToOneInsertTest.cs" />
     <Compile Include="RelationTest\OneToOneTest\OneToOneUpdateTest.cs" />
-    <Compile Include="SerializationRequirements\SerializationTest.cs" />
     <Compile Include="TableTest\TableCreationTests.cs" />
     <Compile Include="TableTest\TableGetAndGetAllTest.cs" />
     <Compile Include="TableTest\TableInsertion.cs" />
