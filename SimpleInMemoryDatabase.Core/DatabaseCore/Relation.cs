@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using SimpleInMemoryDatabase.Core.Api;
 
-namespace SimpleInMemoryDatabase.Core
+namespace SimpleInMemoryDatabase.Core.DatabaseCore
 {
     internal class Relation
     {

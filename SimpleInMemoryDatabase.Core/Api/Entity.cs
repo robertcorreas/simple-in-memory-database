@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimpleInMemoryDatabase.Core
+namespace SimpleInMemoryDatabase.Core.Api
 {
     public class Entity
     {

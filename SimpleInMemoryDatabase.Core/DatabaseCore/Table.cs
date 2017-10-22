@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Nuclex.Cloning;
+using SimpleInMemoryDatabase.Core.Api;
 
-namespace SimpleInMemoryDatabase.Core
+namespace SimpleInMemoryDatabase.Core.DatabaseCore
 {
     internal interface ITable
     {

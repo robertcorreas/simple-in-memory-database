@@ -48,16 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database.cs" />
-    <Compile Include="DatabaseCreator.cs" />
-    <Compile Include="Entity.cs" />
-    <Compile Include="IDatabase.cs" />
-    <Compile Include="Index.cs" />
+    <Compile Include="DatabaseCore\Database.cs" />
+    <Compile Include="Api\DatabaseCreator.cs" />
+    <Compile Include="Api\Entity.cs" />
+    <Compile Include="Api\IDatabase.cs" />
+    <Compile Include="DatabaseCore\Index.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Relation.cs" />
-    <Compile Include="RelationProperties.cs" />
-    <Compile Include="RelationType.cs" />
-    <Compile Include="Table.cs" />
+    <Compile Include="DatabaseCore\Relation.cs" />
+    <Compile Include="DatabaseCore\RelationProperties.cs" />
+    <Compile Include="DatabaseCore\RelationType.cs" />
+    <Compile Include="DatabaseCore\Table.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
