@@ -1,26 +1,21 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Nuclex.Cloning;
 
 namespace SimpleInMemoryDatabase.Core
 {
-    public class Database : IDatabase
+    internal class Database : IDatabase
     {
-        private readonly Dictionary<Type, ITable> _tables;
-        private readonly Relation _relation;
         private readonly Index _index;
+        private readonly Relation _relation;
+        private readonly Dictionary<Type, ITable> _tables;
 
-        public Database()
+        internal Database()
         {
             _tables = new Dictionary<Type, ITable>();
             _relation = new Relation();
-            _index = new Index(); ;
+            _index = new Index();
+            ;
         }
 
         public void CreateTable<T>(Expression<Func<T, Guid>> primaryKey) where T : Entity
@@ -30,7 +25,8 @@ namespace SimpleInMemoryDatabase.Core
             _tables.Add(typeof(T), t);
         }
 
-        public void CreateManyToMany<T1, T2, T3>(Expression<Func<T3, Guid>> fk1, Expression<Func<T3, Guid>> fk2, bool cascateDeletion = true)
+        public void CreateManyToMany<T1, T2, T3>(Expression<Func<T3, Guid>> fk1, Expression<Func<T3, Guid>> fk2,
+            bool cascateDeletion = true)
             where T1 : Entity
             where T2 : Entity
             where T3 : Entity
@@ -39,10 +35,11 @@ namespace SimpleInMemoryDatabase.Core
             var t2 = _tables[typeof(T2)] as Table<T2>;
             var t3 = _tables[typeof(T3)] as Table<T3>;
 
-            _relation.CreateManyToMany<T1, T2, T3>(t1, t2, t3, fk1, fk2, cascateDeletion);
+            _relation.CreateManyToMany(t1, t2, t3, fk1, fk2, cascateDeletion);
         }
 
-        public void CreateOneToMany<T1, T2>(Expression<Func<T2, Guid>> fk, bool cascateDeletion = true) where T1 : Entity where T2 : Entity
+        public void CreateOneToMany<T1, T2>(Expression<Func<T2, Guid>> fk, bool cascateDeletion = true)
+            where T1 : Entity where T2 : Entity
         {
             var t1 = _tables[typeof(T1)] as Table<T1>;
             var t2 = _tables[typeof(T2)] as Table<T2>;
@@ -90,13 +87,7 @@ namespace SimpleInMemoryDatabase.Core
             return _tables[typeof(T)].Count();
         }
 
-
-        public long IndexCount()
-        {
-            return _index.Count;
-        }
-
-        public void Delete<T>(IEnumerable<T> entities, Func<T,bool> query) where T : Entity
+        public void Delete<T>(IEnumerable<T> entities, Func<T, bool> query) where T : Entity
         {
             _tables[typeof(T)].Delete(entities, query);
         }
@@ -109,6 +100,10 @@ namespace SimpleInMemoryDatabase.Core
         public IEnumerable<T> Search<T>(Func<T, bool> predicate) where T : Entity
         {
             return _tables[typeof(T)].Search(predicate);
+        }
+        public long IndexCount()
+        {
+            return _index.Count;
         }
     }
 }

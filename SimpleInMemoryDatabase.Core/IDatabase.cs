@@ -30,5 +30,7 @@ namespace SimpleInMemoryDatabase.Core
         void Delete<T>(IEnumerable<T> entities, Func<T, bool> query) where T : Entity;
         void Update<T>(T entity) where T : Entity;
         IEnumerable<T> Search<T>(Func<T, bool> predicate) where T : Entity;
+
+        long IndexCount();
     }
 }

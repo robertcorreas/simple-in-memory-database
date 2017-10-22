@@ -5,13 +5,13 @@ namespace SimpleInMemoryDatabase.Tests.Helpers
 {
     public class TestBase
     {
-        protected readonly Database Db;
+        protected readonly IDatabase Db;
 
         #region Construtores
 
         public TestBase()
         {
-            Db = new Database();
+            Db = DatabaseCreator.Create();
 
             Db.CreateTable<Trajectory>(t => t.Id);
             Db.CreateTable<Graphic>(g => g.Id);

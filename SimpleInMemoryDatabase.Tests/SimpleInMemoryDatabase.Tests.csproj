@@ -63,8 +63,6 @@
     <Compile Include="CascateDeletion\ManyToManyCascateDeletionTest.cs" />
     <Compile Include="CascateDeletion\OneToManyCascateDeletionTest.cs" />
     <Compile Include="CascateDeletion\OneToOneCascateDeletionTest.cs" />
-    <Compile Include="DatabaseTest\DatabaseTests.cs" />
-    <Compile Include="DataTest\DataTest.cs" />
     <Compile Include="EntitiesTest\Geometry.cs" />
     <Compile Include="EntitiesTest\Graphic.cs" />
     <Compile Include="EntitiesTest\Trajectory.cs" />
@@ -100,6 +98,9 @@
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataTest\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
