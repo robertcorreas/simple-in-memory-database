@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace SimpleInMemoryDatabase.Core.Api
+namespace SimpleInMemoryDatabase.Lib.Api
 {
     public interface IDatabase
     {

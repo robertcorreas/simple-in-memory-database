@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using SimpleInMemoryDatabase.Core.Api;
+using SimpleInMemoryDatabase.Lib.Api;
 
-namespace SimpleInMemoryDatabase.Core.DatabaseCore
+namespace SimpleInMemoryDatabase.Lib.Core
 {
     internal class Database : IDatabase
     {

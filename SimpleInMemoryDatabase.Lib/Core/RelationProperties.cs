@@ -1,7 +1,7 @@
 using System;
-using SimpleInMemoryDatabase.Core.Api;
+using SimpleInMemoryDatabase.Lib.Api;
 
-namespace SimpleInMemoryDatabase.Core.DatabaseCore
+namespace SimpleInMemoryDatabase.Lib.Core
 {
     internal class RelationProperties
     {

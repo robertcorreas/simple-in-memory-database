@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using SimpleInMemoryDatabase.Core.Api;
+using SimpleInMemoryDatabase.Lib.Api;
 
-namespace SimpleInMemoryDatabase.Core.DatabaseCore
+namespace SimpleInMemoryDatabase.Lib.Core
 {
     internal interface ITable
     {

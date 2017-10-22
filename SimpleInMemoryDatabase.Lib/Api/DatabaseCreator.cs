@@ -1,6 +1,6 @@
-﻿using SimpleInMemoryDatabase.Core.DatabaseCore;
+﻿using SimpleInMemoryDatabase.Lib.Core;
 
-namespace SimpleInMemoryDatabase.Core.Api
+namespace SimpleInMemoryDatabase.Lib.Api
 {
     public static class DatabaseCreator
     {

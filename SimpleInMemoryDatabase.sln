@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleInMemoryDatabase.Core", "SimpleInMemoryDatabase.Core\SimpleInMemoryDatabase.Core.csproj", "{ACA097F1-D1BE-4B22-94CA-33809C89F6FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleInMemoryDatabase.Lib", "SimpleInMemoryDatabase.Lib\SimpleInMemoryDatabase.Lib.csproj", "{ACA097F1-D1BE-4B22-94CA-33809C89F6FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleInMemoryDatabase.Tests", "SimpleInMemoryDatabase.Tests\SimpleInMemoryDatabase.Tests.csproj", "{8A47103C-94D1-4B91-B378-B15099DA7A34}"
 EndProject
@@ -24,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E1B78AD0-A9EE-46B7-9783-FDCC353A2010}
 	EndGlobalSection
 EndGlobal

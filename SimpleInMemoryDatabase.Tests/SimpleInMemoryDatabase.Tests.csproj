@@ -88,9 +88,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SimpleInMemoryDatabase.Core\SimpleInMemoryDatabase.Core.csproj">
+    <ProjectReference Include="..\SimpleInMemoryDatabase.Lib\SimpleInMemoryDatabase.Lib.csproj">
       <Project>{aca097f1-d1be-4b22-94ca-33809c89f6ff}</Project>
-      <Name>SimpleInMemoryDatabase.Core</Name>
+      <Name>SimpleInMemoryDatabase.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

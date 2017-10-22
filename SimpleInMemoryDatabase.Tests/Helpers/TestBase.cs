@@ -1,5 +1,4 @@
-﻿using SimpleInMemoryDatabase.Core;
-using SimpleInMemoryDatabase.Core.Api;
+﻿using SimpleInMemoryDatabase.Lib.Api;
 using SimpleInMemoryDatabase.Tests.EntitiesTest;
 
 namespace SimpleInMemoryDatabase.Tests.Helpers

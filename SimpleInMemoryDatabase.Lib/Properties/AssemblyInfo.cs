@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("SimpleInMemoryDatabase.Core")]
+[assembly: AssemblyTitle("SimpleInMemoryDatabase.Lib")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SimpleInMemoryDatabase.Core")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyProduct("SimpleInMemoryDatabase.Lib")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

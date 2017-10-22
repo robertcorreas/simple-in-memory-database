@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SimpleInMemoryDatabase.Core.DatabaseCore
+namespace SimpleInMemoryDatabase.Lib.Core
 {
     internal class Index
     {

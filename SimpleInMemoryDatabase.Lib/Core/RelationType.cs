@@ -1,4 +1,4 @@
-namespace SimpleInMemoryDatabase.Core.DatabaseCore
+namespace SimpleInMemoryDatabase.Lib.Core
 {
     internal enum RelationType
     {
