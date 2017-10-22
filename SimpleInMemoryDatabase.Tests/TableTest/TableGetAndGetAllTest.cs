@@ -11,14 +11,14 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
         {
             var graphic = new Graphic {Title = "title1"};
 
-            graphicTable.Insert(graphic);
+            Db.Insert(graphic);
 
-            var graphicByGet = graphicTable.Get(graphic.Id);
+            var graphicByGet = Db.GetOne<Graphic>(graphic.Id);
 
             Assert.Equal(graphic.Title, graphicByGet.Title);
             graphicByGet.Title = "Other title";
 
-            Assert.NotEqual(graphicByGet.Title, graphicTable.Get(graphic.Id).Title);
+            Assert.NotEqual(graphicByGet.Title, Db.GetOne<Graphic>(graphic.Id).Title);
         }
 
         [Fact(DisplayName = "Should Return Copies In GetAll Method")]
@@ -28,13 +28,13 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
             var graphic2 = new Graphic {Title = "title2"};
             var graphic3 = new Graphic {Title = "title3"};
 
-            graphicTable.Insert(graphic1);
-            graphicTable.Insert(graphic2);
-            graphicTable.Insert(graphic3);
+            Db.Insert(graphic1);
+            Db.Insert(graphic2);
+            Db.Insert(graphic3);
 
-            var graphic1ByGet = graphicTable.Get(graphic1.Id);
-            var graphic2ByGet = graphicTable.Get(graphic2.Id);
-            var graphic3ByGet = graphicTable.Get(graphic3.Id);
+            var graphic1ByGet = Db.GetOne<Graphic>(graphic1.Id);
+            var graphic2ByGet = Db.GetOne<Graphic>(graphic2.Id);
+            var graphic3ByGet = Db.GetOne<Graphic>(graphic3.Id);
 
             Assert.Equal(graphic1.Title, graphic1ByGet.Title);
             Assert.Equal(graphic2.Title, graphic2ByGet.Title);
@@ -44,9 +44,9 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
             graphic2ByGet.Title = "Other title2";
             graphic3ByGet.Title = "Other title3";
 
-            Assert.NotEqual(graphic1ByGet.Title, graphicTable.Get(graphic1.Id).Title);
-            Assert.NotEqual(graphic2ByGet.Title, graphicTable.Get(graphic2.Id).Title);
-            Assert.NotEqual(graphic3ByGet.Title, graphicTable.Get(graphic3.Id).Title);
+            Assert.NotEqual(graphic1ByGet.Title, Db.GetOne<Graphic>(graphic1.Id).Title);
+            Assert.NotEqual(graphic2ByGet.Title, Db.GetOne<Graphic>(graphic2.Id).Title);
+            Assert.NotEqual(graphic3ByGet.Title, Db.GetOne<Graphic>(graphic3.Id).Title);
         }
     }
 }

@@ -63,6 +63,7 @@
     <Compile Include="CascateDeletion\ManyToManyCascateDeletionTest.cs" />
     <Compile Include="CascateDeletion\OneToManyCascateDeletionTest.cs" />
     <Compile Include="CascateDeletion\OneToOneCascateDeletionTest.cs" />
+    <Compile Include="DatabaseTest\DatabaseTests.cs" />
     <Compile Include="DataTest\DataTest.cs" />
     <Compile Include="EntitiesTest\Geometry.cs" />
     <Compile Include="EntitiesTest\Graphic.cs" />

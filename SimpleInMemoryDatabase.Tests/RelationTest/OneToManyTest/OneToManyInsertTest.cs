@@ -10,7 +10,7 @@ namespace SimpleInMemoryDatabase.Tests.RelationTest.OneToManyTest
         [Fact(DisplayName = "Should Insert OneToMany If Fk Is Satisfy")]
         public void ShouldInsertOneToManyIfFkIsSatisfy()
         {
-            Relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
+            Db.CreateOneToMany<Trajectory,TrajectoryPoint>(tp => tp.Trajectory.Id);
 
             var trajectory = new Trajectory();
 
@@ -18,15 +18,15 @@ namespace SimpleInMemoryDatabase.Tests.RelationTest.OneToManyTest
             var tp2 = new TrajectoryPoint(trajectory);
             var tp3 = new TrajectoryPoint(trajectory);
 
-            trajectoryTable.Insert(trajectory);
-            trajectoryPointTable.Insert(tp1);
-            trajectoryPointTable.Insert(tp2);
-            trajectoryPointTable.Insert(tp3);
+            Db.Insert(trajectory);
+            Db.Insert(tp1);
+            Db.Insert(tp2);
+            Db.Insert(tp3);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(3 == trajectoryPointTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(3 == Db.Count<TrajectoryPoint>());
 
-            foreach (var trajectoryPoint in trajectoryPointTable.GetAll())
+            foreach (var trajectoryPoint in Db.GetAll<TrajectoryPoint>())
             {
                 Assert.Equal(trajectory.Id, trajectoryPoint.Trajectory.Id);
             }
@@ -35,18 +35,18 @@ namespace SimpleInMemoryDatabase.Tests.RelationTest.OneToManyTest
         [Fact(DisplayName = "Should Throw Exception When Fk Dependency Not Satisfy (OneToMany)")]
         public void ShouldThrowExceptionWhenFkDependencyNotSatisfy()
         {
-            Relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
+            Db.CreateOneToMany<Trajectory,TrajectoryPoint>(tp => tp.Trajectory.Id);
 
             var trajectory = new Trajectory();
 
             var tp1 = new TrajectoryPoint(trajectory);
 
-            var ex = Assert.Throws<InvalidOperationException>(() => { trajectoryPointTable.Insert(tp1); });
+            var ex = Assert.Throws<InvalidOperationException>(() => { Db.Insert(tp1); });
 
 
             Assert.Equal("Invalid FK", ex.Message);
-            Assert.True(0 == trajectoryTable.Count);
-            Assert.True(0 == trajectoryPointTable.Count);
+            Assert.True(0 == Db.Count<Trajectory>());
+            Assert.True(0 == Db.Count<TrajectoryPoint>());
         }
     }
 }

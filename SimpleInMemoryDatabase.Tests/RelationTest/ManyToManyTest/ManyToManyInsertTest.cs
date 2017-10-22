@@ -15,19 +15,18 @@ namespace SimpleInMemoryDatabase.Tests.RelationTest.ManyToManyTest
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
 
-            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
+            Db.CreateManyToMany<Trajectory,Graphic,TrajectoryGraphicRelationalTable>(tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
-            trajectoryTable.Insert(trajectory);
-            graphicTable.Insert(graphic);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic);
+            Db.Insert(trajectory);
+            Db.Insert(graphic);
+            Db.Insert(trajectoryGraphic);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            Assert.Equal(trajectory.Id, trajectoryGraphicRelationalTable.GetAll().First().Trajectory.Id);
-            Assert.Equal(graphic.Id, trajectoryGraphicRelationalTable.GetAll().First().Graphic.Id);
+            Assert.Equal(trajectory.Id, Db.GetAll<TrajectoryGraphicRelationalTable>().First().Trajectory.Id);
+            Assert.Equal(graphic.Id, Db.GetAll<TrajectoryGraphicRelationalTable>().First().Graphic.Id);
         }
 
         [Fact(DisplayName = "Should Throw Exception When Fk Dependency Not Satisfy - Insert (ManyToMany)")]
@@ -37,16 +36,15 @@ namespace SimpleInMemoryDatabase.Tests.RelationTest.ManyToManyTest
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
 
-            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
+            Db.CreateManyToMany<Trajectory,Graphic,TrajectoryGraphicRelationalTable>(tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
-            var ex = Assert.Throws<InvalidOperationException>(() => { trajectoryGraphicRelationalTable.Insert(trajectoryGraphic); });
+            var ex = Assert.Throws<InvalidOperationException>(() => { Db.Insert(trajectoryGraphic); });
 
             Assert.Equal("Invalid FK", ex.Message);
 
-            Assert.True(0 == trajectoryTable.Count);
-            Assert.True(0 == graphicTable.Count);
-            Assert.True(0 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(0 == Db.Count<Trajectory>());
+            Assert.True(0 == Db.Count<Graphic>());
+            Assert.True(0 == Db.Count<TrajectoryGraphicRelationalTable>());
         }
     }
 }

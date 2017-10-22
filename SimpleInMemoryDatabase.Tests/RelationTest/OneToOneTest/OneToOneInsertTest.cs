@@ -10,32 +10,32 @@ namespace SimpleInMemoryDatabase.Tests.RelationTest.OneToOneTest
         [Fact(DisplayName = "Should Throw Exception When Fk Dependency Not Satisfy (OneToOne)")]
         public void ShouldThrowExceptionWhenFkDependencyNotSatisfy()
         {
-            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            Db.CreateOneToOne<Well,Geometry>(w => w.Geometry.Id);
 
             var geometria = new Geometry();
             var well = new Well(geometria, new Trajectory());
 
-            var ex = Assert.Throws<InvalidOperationException>(() => { wellTable.Insert(well); });
+            var ex = Assert.Throws<InvalidOperationException>(() => { Db.Insert(well); });
 
-            Assert.True(0 == wellTable.Count);
+            Assert.True(0 == Db.Count<Well>());
             Assert.Equal("Invalid FK", ex.Message);
         }
 
         [Fact(DisplayName = "Should Insert If Fk Dependency Satisfy (OneToOne)")]
         public void ShouldInsertIfFkDependencySatisfy()
         {
-            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            Db.CreateOneToOne<Well,Geometry>(w => w.Geometry.Id);
 
             var geometry = new Geometry();
             var well = new Well(geometry, new Trajectory());
 
-            geometryTable.Insert(geometry);
-            wellTable.Insert(well);
+            Db.Insert(geometry);
+            Db.Insert(well);
 
-            Assert.True(1 == wellTable.Count);
-            Assert.True(1 == geometryTable.Count);
+            Assert.True(1 == Db.Count<Well>());
+            Assert.True(1 == Db.Count<Geometry>());
 
-            Assert.Equal(geometry.Id, wellTable.Get(well.Id).Geometry.Id);
+            Assert.Equal(geometry.Id, Db.GetOne<Well>(well.Id).Geometry.Id);
         }
     }
 }

@@ -11,70 +11,68 @@ namespace SimpleInMemoryDatabase.Tests.RelationTest.ManyToManyTest
         [Fact(DisplayName = "Should Update if Fk Satisfy (ManyToMany)")]
         public void ShouldUpdateIfFkSatisfy()
         {
-            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
+            Db.CreateManyToMany<Trajectory,Graphic,TrajectoryGraphicRelationalTable>(tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
             var trajectory = new Trajectory();
             var trajectory2 = new Trajectory();
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
 
-            trajectoryTable.Insert(trajectory);
-            trajectoryTable.Insert(trajectory2);
-            graphicTable.Insert(graphic);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic);
+            Db.Insert(trajectory);
+            Db.Insert(trajectory2);
+            Db.Insert(graphic);
+            Db.Insert(trajectoryGraphic);
 
-            Assert.True(2 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(2 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            Assert.Equal(trajectory.Id, trajectoryGraphicRelationalTable.GetAll().First().Trajectory.Id);
-            Assert.Equal(graphic.Id, trajectoryGraphicRelationalTable.GetAll().First().Graphic.Id);
+            Assert.Equal(trajectory.Id, Db.GetAll<TrajectoryGraphicRelationalTable>().First().Trajectory.Id);
+            Assert.Equal(graphic.Id, Db.GetAll<TrajectoryGraphicRelationalTable>().First().Graphic.Id);
 
             trajectoryGraphic.Trajectory = trajectory2;
-            trajectoryGraphicRelationalTable.Update(trajectoryGraphic);
+            Db.Update(trajectoryGraphic);
 
-            Assert.True(2 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(2 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            Assert.Equal(trajectory2.Id, trajectoryGraphicRelationalTable.GetAll().First().Trajectory.Id);
-            Assert.Equal(graphic.Id, trajectoryGraphicRelationalTable.GetAll().First().Graphic.Id);
+            Assert.Equal(trajectory2.Id, Db.GetAll<TrajectoryGraphicRelationalTable>().First().Trajectory.Id);
+            Assert.Equal(graphic.Id, Db.GetAll<TrajectoryGraphicRelationalTable>().First().Graphic.Id);
         }
 
         [Fact(DisplayName = "Should Throw Exception When Fk Dependency Not Satisfy - Update(ManyToMany)")]
         public void ShouldThrowExceptionWhenFkDependencyNotSatisfy()
         {
-            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
+            Db.CreateManyToMany<Trajectory,Graphic,TrajectoryGraphicRelationalTable>(tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
             var trajectory = new Trajectory();
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
 
-            trajectoryTable.Insert(trajectory);
-            graphicTable.Insert(graphic);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic);
+            Db.Insert(trajectory);
+            Db.Insert(graphic);
+            Db.Insert(trajectoryGraphic);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            Assert.Equal(trajectory.Id, trajectoryGraphicRelationalTable.GetAll().First().Trajectory.Id);
-            Assert.Equal(graphic.Id, trajectoryGraphicRelationalTable.GetAll().First().Graphic.Id);
+            Assert.Equal(trajectory.Id, Db.GetAll<TrajectoryGraphicRelationalTable>().First().Trajectory.Id);
+            Assert.Equal(graphic.Id, Db.GetAll<TrajectoryGraphicRelationalTable>().First().Graphic.Id);
 
             trajectoryGraphic.Trajectory = new Trajectory();
 
-            var ex = Assert.Throws<InvalidOperationException>(() => { trajectoryGraphicRelationalTable.Update(trajectoryGraphic); });
+            var ex = Assert.Throws<InvalidOperationException>(() => { Db.Update(trajectoryGraphic); });
 
             Assert.Equal("Invalid FK", ex.Message);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            Assert.Equal(trajectory.Id, trajectoryGraphicRelationalTable.GetAll().First().Trajectory.Id);
-            Assert.Equal(graphic.Id, trajectoryGraphicRelationalTable.GetAll().First().Graphic.Id);
+            Assert.Equal(trajectory.Id, Db.GetAll<TrajectoryGraphicRelationalTable>().First().Trajectory.Id);
+            Assert.Equal(graphic.Id, Db.GetAll<TrajectoryGraphicRelationalTable>().First().Graphic.Id);
         }
     }
 }

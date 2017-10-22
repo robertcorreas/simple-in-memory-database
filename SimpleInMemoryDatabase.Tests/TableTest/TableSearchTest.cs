@@ -24,17 +24,17 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
             var tp5 = new TrajectoryPoint(trajectory2);
             var tp6 = new TrajectoryPoint(trajectory1);
 
-            trajectoryTable.Insert(trajectory1);
-            trajectoryTable.Insert(trajectory2);
+            Db.Insert(trajectory1);
+            Db.Insert(trajectory2);
 
-            trajectoryPointTable.Insert(tp1);
-            trajectoryPointTable.Insert(tp2);
-            trajectoryPointTable.Insert(tp3);
-            trajectoryPointTable.Insert(tp4);
-            trajectoryPointTable.Insert(tp5);
-            trajectoryPointTable.Insert(tp6);
+            Db.Insert(tp1);
+            Db.Insert(tp2);
+            Db.Insert(tp3);
+            Db.Insert(tp4);
+            Db.Insert(tp5);
+            Db.Insert(tp6);
 
-            var founded = trajectoryPointTable.Search(tp => tp.Trajectory.Id == trajectory2.Id).ToList();
+            var founded = Db.Search<TrajectoryPoint>(tp => tp.Trajectory.Id == trajectory2.Id).ToList();
 
             var expected = new List<TrajectoryPoint>()
             {
@@ -57,14 +57,13 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
 
             var tp1 = new TrajectoryPoint(trajectory1);
            
-            trajectoryTable.Insert(trajectory1);
-
-            trajectoryPointTable.Insert(tp1);
+            Db.Insert(trajectory1);
+            Db.Insert(tp1);
             
-            var founded = trajectoryPointTable.Search(tp => tp.Trajectory.Id == trajectory1.Id).First();
+            var founded = Db.Search<TrajectoryPoint>(tp => tp.Trajectory.Id == trajectory1.Id).First();
             founded.Trajectory = new Trajectory();
 
-            var newFounded = trajectoryPointTable.Search(tp => tp.Trajectory.Id == trajectory1.Id).First();
+            var newFounded = Db.Search<TrajectoryPoint>(tp => tp.Trajectory.Id == trajectory1.Id).First();
 
             Assert.Equal(founded.Id,newFounded.Id);
             Assert.NotEqual(founded.Trajectory.Id, newFounded.Trajectory.Id);

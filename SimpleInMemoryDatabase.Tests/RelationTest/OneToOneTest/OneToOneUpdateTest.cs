@@ -10,61 +10,61 @@ namespace SimpleInMemoryDatabase.Tests.RelationTest.OneToOneTest
         [Fact(DisplayName = "Should Update If Fk Satisfy")]
         public void ShouldUpdateIfFkSatisfy()
         {
-            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            Db.CreateOneToOne<Well,Geometry>(w => w.Geometry.Id);
 
             var geometry = new Geometry();
             var geometry2 = new Geometry();
             var well = new Well(geometry, new Trajectory());
 
-            geometryTable.Insert(geometry);
-            geometryTable.Insert(geometry2);
-            wellTable.Insert(well);
+            Db.Insert(geometry);
+            Db.Insert(geometry2);
+            Db.Insert(well);
 
-            Assert.True(1 == wellTable.Count);
-            Assert.True(2 == geometryTable.Count);
-            Assert.True(3 == Index.Count);
+            Assert.True(1 == Db.Count<Well>());
+            Assert.True(2 == Db.Count<Geometry>());
+            Assert.True(3 == Db.IndexCount());
 
-            Assert.Equal(well.Id, wellTable.Get(well.Id).Id);
-            Assert.Equal(geometry.Id, wellTable.Get(well.Id).Geometry.Id);
-            Assert.Equal(geometry.Id, geometryTable.Get(geometry.Id).Id);
-            Assert.Equal(geometry2.Id, geometryTable.Get(geometry2.Id).Id);
+            Assert.Equal(well.Id, Db.GetOne<Well>(well.Id).Id);
+            Assert.Equal(geometry.Id, Db.GetOne<Well>(well.Id).Geometry.Id);
+            Assert.Equal(geometry.Id, Db.GetOne<Geometry>(geometry.Id).Id);
+            Assert.Equal(geometry2.Id, Db.GetOne<Geometry>(geometry2.Id).Id);
 
             well.Geometry = geometry2;
 
-            wellTable.Update(well);
+            Db.Update(well);
 
-            Assert.True(1 == wellTable.Count);
-            Assert.True(2 == geometryTable.Count);
-            Assert.True(3 == Index.Count);
+            Assert.True(1 == Db.Count<Well>());
+            Assert.True(2 == Db.Count<Geometry>());
+            Assert.True(3 == Db.IndexCount());
 
-            Assert.Equal(well.Id, wellTable.Get(well.Id).Id);
-            Assert.Equal(geometry2.Id, wellTable.Get(well.Id).Geometry.Id);
-            Assert.Equal(geometry.Id, geometryTable.Get(geometry.Id).Id);
-            Assert.Equal(geometry2.Id, geometryTable.Get(geometry2.Id).Id);
+            Assert.Equal(well.Id, Db.GetOne<Well>(well.Id).Id);
+            Assert.Equal(geometry2.Id, Db.GetOne<Well>(well.Id).Geometry.Id);
+            Assert.Equal(geometry.Id, Db.GetOne<Geometry>(geometry.Id).Id);
+            Assert.Equal(geometry2.Id, Db.GetOne<Geometry>(geometry2.Id).Id);
         }
 
         [Fact(DisplayName = "Should Throw Exception Update If Fk Not Satisfy (OneToOne)")]
         public void ShouldThrowExceptionUpdateIfFkNotSatisfy()
         {
-            Relation.CreateOneToOne(wellTable, geometryTable, w => w.Geometry.Id);
+            Db.CreateOneToOne<Well,Geometry>(w => w.Geometry.Id);
 
             var geometry = new Geometry();
             var well = new Well(geometry, new Trajectory());
 
-            geometryTable.Insert(geometry);
-            wellTable.Insert(well);
+            Db.Insert(geometry);
+            Db.Insert(well);
 
-            Assert.True(1 == wellTable.Count);
-            Assert.True(1 == geometryTable.Count);
-            Assert.True(2 == Index.Count);
+            Assert.True(1 == Db.Count<Well>());
+            Assert.True(1 == Db.Count<Geometry>());
+            Assert.True(2 == Db.IndexCount());
 
-            Assert.Equal(well.Id, wellTable.Get(well.Id).Id);
-            Assert.Equal(geometry.Id, wellTable.Get(well.Id).Geometry.Id);
-            Assert.Equal(geometry.Id, geometryTable.Get(geometry.Id).Id);
+            Assert.Equal(well.Id, Db.GetOne<Well>(well.Id).Id);
+            Assert.Equal(geometry.Id, Db.GetOne<Well>(well.Id).Geometry.Id);
+            Assert.Equal(geometry.Id, Db.GetOne<Geometry>(geometry.Id).Id);
 
             well.Geometry = new Geometry();
 
-            var ex = Assert.Throws<InvalidOperationException>(() => { wellTable.Update(well); });
+            var ex = Assert.Throws<InvalidOperationException>(() => { Db.Update(well); });
 
             Assert.Equal("Invalid FK", ex.Message);
         }

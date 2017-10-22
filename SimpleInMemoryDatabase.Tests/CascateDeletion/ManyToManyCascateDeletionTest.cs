@@ -13,154 +13,149 @@ namespace SimpleInMemoryDatabase.Tests.CascateDeletion
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
 
-            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
+            Db.CreateManyToMany<Trajectory,Graphic,TrajectoryGraphicRelationalTable>(tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
-            trajectoryTable.Insert(trajectory);
-            graphicTable.Insert(graphic);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic);
+            Db.Insert(trajectory);
+            Db.Insert(graphic);
+            Db.Insert(trajectoryGraphic);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            trajectoryTable.Delete(trajectory);
+            Db.Delete(trajectory);
 
-            Assert.True(0 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(0 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(0 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(0 == Db.Count<TrajectoryGraphicRelationalTable>());
         }
 
         [Fact(DisplayName = "Should Delete In Cascate Deleting Table2")]
         public void ShouldDeleteInCascateDeletingTable2()
         {
-            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
+            Db.CreateManyToMany<Trajectory,Graphic,TrajectoryGraphicRelationalTable>(tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
             var trajectory = new Trajectory();
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
 
-            trajectoryTable.Insert(trajectory);
-            graphicTable.Insert(graphic);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic);
+            Db.Insert(trajectory);
+            Db.Insert(graphic);
+            Db.Insert(trajectoryGraphic);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            graphicTable.Delete(graphic);
+            Db.Delete(graphic);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(0 == graphicTable.Count);
-            Assert.True(0 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(0 == Db.Count<Graphic>());
+            Assert.True(0 == Db.Count<TrajectoryGraphicRelationalTable>());
         }
 
         [Fact(DisplayName = "Should Delete In Cascate Deleting Relational Table")]
         public void ShouldDeleteInCascateDeletingRelationalTable()
         {
-            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
+            Db.CreateManyToMany<Trajectory,Graphic,TrajectoryGraphicRelationalTable>(tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
             var trajectory = new Trajectory();
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
 
-            trajectoryTable.Insert(trajectory);
-            graphicTable.Insert(graphic);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic);
+            Db.Insert(trajectory);
+            Db.Insert(graphic);
+            Db.Insert(trajectoryGraphic);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            trajectoryGraphicRelationalTable.Delete(trajectoryGraphic);
+            Db.Delete(trajectoryGraphic);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(0 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(0 == Db.Count<TrajectoryGraphicRelationalTable>());
         }
 
         [Fact(DisplayName = "Should Not Delete In Cascate Deleting Table1")]
         public void ShouldNotDeleteInCascateDeletingTable1()
         {
-            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id, false);
+            Db.CreateManyToMany<Trajectory,Graphic,TrajectoryGraphicRelationalTable>(tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id, false);
 
             var trajectory = new Trajectory();
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
 
-            trajectoryTable.Insert(trajectory);
-            graphicTable.Insert(graphic);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic);
+            Db.Insert(trajectory);
+            Db.Insert(graphic);
+            Db.Insert(trajectoryGraphic);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            trajectoryTable.Delete(trajectory);
+            Db.Delete(trajectory);
 
-            Assert.True(0 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(0 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
         }
 
         [Fact(DisplayName = "Should Not Delete In Cascate Deleting Table2")]
         public void ShouldNotDeleteInCascateDeletingTable2()
         {
-            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id, false);
+            Db.CreateManyToMany<Trajectory, Graphic, TrajectoryGraphicRelationalTable>(tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id, false);
 
             var trajectory = new Trajectory();
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
 
-            trajectoryTable.Insert(trajectory);
-            graphicTable.Insert(graphic);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic);
+            Db.Insert(trajectory);
+            Db.Insert(graphic);
+            Db.Insert(trajectoryGraphic);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            graphicTable.Delete(graphic);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(0 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Db.Delete(graphic);
+
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(0 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
+
         }
 
         [Fact(DisplayName = "Should Not Delete In Cascate Deleting RelationalTable")]
         public void ShouldNotDeleteInCascateDeletingRelationalTable()
         {
-            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id, false);
+            Db.CreateManyToMany<Trajectory, Graphic, TrajectoryGraphicRelationalTable>(tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id, false);
 
             var trajectory = new Trajectory();
             var graphic = new Graphic();
             var trajectoryGraphic = new TrajectoryGraphicRelationalTable(trajectory, graphic);
 
-            trajectoryTable.Insert(trajectory);
-            graphicTable.Insert(graphic);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic);
+            Db.Insert(trajectory);
+            Db.Insert(graphic);
+            Db.Insert(trajectoryGraphic);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            trajectoryGraphicRelationalTable.Delete(trajectoryGraphic);
+            Db.Delete(trajectoryGraphic);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(0 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(0 == Db.Count<TrajectoryGraphicRelationalTable>());
         }
 
         [Fact(DisplayName = "Should Delete In Cascate With Multiple ManyToMany Deleting Table1")]
         public void ShouldDeleteInCascateWithMultipleManyToManyDeletingTable1()
         {
-            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
+            Db.CreateManyToMany<Trajectory,Graphic,TrajectoryGraphicRelationalTable>(tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
             var trajectory1 = new Trajectory();
             var trajectory2 = new Trajectory();
@@ -169,29 +164,28 @@ namespace SimpleInMemoryDatabase.Tests.CascateDeletion
             var trajectoryGraphic1 = new TrajectoryGraphicRelationalTable(trajectory1, graphic1);
             var trajectoryGraphic2 = new TrajectoryGraphicRelationalTable(trajectory2, graphic2);
 
-            trajectoryTable.Insert(trajectory1);
-            trajectoryTable.Insert(trajectory2);
-            graphicTable.Insert(graphic1);
-            graphicTable.Insert(graphic2);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic1);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic2);
+            Db.Insert(trajectory1);
+            Db.Insert(trajectory2);
+            Db.Insert(graphic1);
+            Db.Insert(graphic2);
+            Db.Insert(trajectoryGraphic1);
+            Db.Insert(trajectoryGraphic2);
 
-            Assert.True(2 == trajectoryTable.Count);
-            Assert.True(2 == graphicTable.Count);
-            Assert.True(2 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(2 == Db.Count<Trajectory>());
+            Assert.True(2 == Db.Count<Graphic>());
+            Assert.True(2 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            trajectoryTable.Delete(trajectory1);
+            Db.Delete(trajectory1);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(2 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(2 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
         }
 
         [Fact(DisplayName = "Should Delete In Cascate With Multiple ManyToMany Deleting Table2")]
         public void ShouldDeleteInCascateWithMultipleManyToManyDeletingTable2()
         {
-            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
+            Db.CreateManyToMany<Trajectory,Graphic,TrajectoryGraphicRelationalTable>(tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
             var trajectory1 = new Trajectory();
             var trajectory2 = new Trajectory();
@@ -200,29 +194,28 @@ namespace SimpleInMemoryDatabase.Tests.CascateDeletion
             var trajectoryGraphic1 = new TrajectoryGraphicRelationalTable(trajectory1, graphic1);
             var trajectoryGraphic2 = new TrajectoryGraphicRelationalTable(trajectory2, graphic2);
 
-            trajectoryTable.Insert(trajectory1);
-            trajectoryTable.Insert(trajectory2);
-            graphicTable.Insert(graphic1);
-            graphicTable.Insert(graphic2);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic1);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic2);
+            Db.Insert(trajectory1);
+            Db.Insert(trajectory2);
+            Db.Insert(graphic1);
+            Db.Insert(graphic2);
+            Db.Insert(trajectoryGraphic1);
+            Db.Insert(trajectoryGraphic2);
 
-            Assert.True(2 == trajectoryTable.Count);
-            Assert.True(2 == graphicTable.Count);
-            Assert.True(2 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(2 == Db.Count<Trajectory>());
+            Assert.True(2 == Db.Count<Graphic>());
+            Assert.True(2 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            graphicTable.Delete(graphic2);
+            Db.Delete(graphic2);
 
-            Assert.True(2 == trajectoryTable.Count);
-            Assert.True(1 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(2 == Db.Count<Trajectory>());
+            Assert.True(1 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
         }
 
         [Fact(DisplayName = "Should Delete In Cascate With Multiple ManyToMany Deleting RelationalTable")]
         public void ShouldDeleteInCascateWithMultipleManyToManyDeletingRelationalTable()
         {
-            Relation.CreateManyToMany(trajectoryTable, graphicTable, trajectoryGraphicRelationalTable,
-                tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
+            Db.CreateManyToMany<Trajectory,Graphic,TrajectoryGraphicRelationalTable>(tgr => tgr.Trajectory.Id, tgr => tgr.Graphic.Id);
 
             var trajectory1 = new Trajectory();
             var trajectory2 = new Trajectory();
@@ -231,22 +224,22 @@ namespace SimpleInMemoryDatabase.Tests.CascateDeletion
             var trajectoryGraphic1 = new TrajectoryGraphicRelationalTable(trajectory1, graphic1);
             var trajectoryGraphic2 = new TrajectoryGraphicRelationalTable(trajectory2, graphic2);
 
-            trajectoryTable.Insert(trajectory1);
-            trajectoryTable.Insert(trajectory2);
-            graphicTable.Insert(graphic1);
-            graphicTable.Insert(graphic2);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic1);
-            trajectoryGraphicRelationalTable.Insert(trajectoryGraphic2);
+            Db.Insert(trajectory1);
+            Db.Insert(trajectory2);
+            Db.Insert(graphic1);
+            Db.Insert(graphic2);
+            Db.Insert(trajectoryGraphic1);
+            Db.Insert(trajectoryGraphic2);
 
-            Assert.True(2 == trajectoryTable.Count);
-            Assert.True(2 == graphicTable.Count);
-            Assert.True(2 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(2 == Db.Count<Trajectory>());
+            Assert.True(2 == Db.Count<Graphic>());
+            Assert.True(2 == Db.Count<TrajectoryGraphicRelationalTable>());
 
-            trajectoryGraphicRelationalTable.Delete(trajectoryGraphic1);
+            Db.Delete(trajectoryGraphic1);
 
-            Assert.True(2 == trajectoryTable.Count);
-            Assert.True(2 == graphicTable.Count);
-            Assert.True(1 == trajectoryGraphicRelationalTable.Count);
+            Assert.True(2 == Db.Count<Trajectory>());
+            Assert.True(2 == Db.Count<Graphic>());
+            Assert.True(1 == Db.Count<TrajectoryGraphicRelationalTable>());
         }
     }
 }

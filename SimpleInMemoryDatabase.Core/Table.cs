@@ -6,7 +6,21 @@ using Nuclex.Cloning;
 
 namespace SimpleInMemoryDatabase.Core
 {
-    public class Table<T> where T : Entity
+    public interface ITable
+    {
+        void Insert<T>(T entity) where T : Entity;
+        void Insert<T>(IEnumerable<T> entities) where T : Entity;
+        IEnumerable<T> GetAll<T>() where T : Entity;
+        void Delete<T>(T entity) where T : Entity;
+        void Delete<T>(IEnumerable<T> entities, Func<T, bool> query) where T : Entity;
+
+        long Count();
+        T GetOne<T>(Guid pk) where T : Entity;
+        void Update<T>(T entity) where T : Entity;
+        IEnumerable<T> Search<T>(Func<T, bool> predicate) where T : Entity;
+    }
+
+    public class Table<T> : ITable where T : Entity
     {
         private readonly Index _index;
         private readonly Func<T, Guid> _primaryKey;
@@ -15,11 +29,11 @@ namespace SimpleInMemoryDatabase.Core
 
         #region Construtores
 
-        public Table(Dictionary<Guid, T> tuplas, Expression<Func<T, Guid>> primaryKey, Relation relation = null,
+        public Table(Func<T, Guid> primaryKey, Relation relation = null,
             Index index = null)
         {
-            _primaryKey = primaryKey.Compile();
-            _tuples = tuplas;
+            _primaryKey = primaryKey;
+            _tuples = new Dictionary<Guid, T>();
             _index = index ?? new Index();
             _relation = relation ?? new Relation();
         }
@@ -169,6 +183,53 @@ namespace SimpleInMemoryDatabase.Core
         public IEnumerable<T> Search(Func<T, bool> predicate)
         {
             return _tuples.Values.Where(predicate).Select(ExpressionTreeCloner.DeepFieldClone);
+        }
+
+        void ITable.Insert<T1>(T1 entity)
+        {
+            this.Insert(entity as T);
+        }
+
+        public void Insert<T1>(IEnumerable<T1> entities) where T1 : Entity
+        {
+            Insert(entities.Cast<T>());
+        }
+
+        IEnumerable<T1> ITable.GetAll<T1>()
+        {
+            return this.GetAll().Cast<T1>();
+
+        }
+
+        public void Delete<T1>(T1 entity) where T1 : Entity
+        {
+            Delete(entity as T);
+        }
+
+        public void Delete<T1>(IEnumerable<T1> entities, Func<T1, bool> query) where T1 : Entity
+        {
+            Delete(entities.Cast<T>(), query as Func<T, bool>);
+        }
+
+        long ITable.Count()
+        {
+            return this._tuples.Count;
+        }
+
+        public T1 GetOne<T1>(Guid pk) where T1 : Entity
+        {
+            return Get(pk) as T1;
+
+        }
+
+        public void Update<T1>(T1 entity) where T1 : Entity
+        {
+            Update(entity as T);
+        }
+
+        public IEnumerable<T1> Search<T1>(Func<T1, bool> predicate) where T1 : Entity
+        {
+            return Search(predicate as Func<T, bool>).Cast<T1>();
         }
     }
 }

@@ -13,18 +13,29 @@ namespace SimpleInMemoryDatabase.Tests.Helpers
         protected readonly Table<Trajectory> trajectoryTable;
         protected readonly Table<Well> wellTable;
 
+        protected readonly Database Db;
+
         #region Construtores
 
         public TestBase()
         {
             _tableFactoryHelper = new TableFactoryHelper(new DataTest.DataTest(), new Index(), new Relation());
 
-            trajectoryTable = _tableFactoryHelper.GetTrajectoryTable();
-            graphicTable = _tableFactoryHelper.GetGraphicTable();
-            trajectoryGraphicRelationalTable = _tableFactoryHelper.GetTrajectoryGraphicRelationalTable();
-            trajectoryPointTable = _tableFactoryHelper.GetTrajectoryPointTable();
-            geometryTable = _tableFactoryHelper.GetGeometryTable();
-            wellTable = _tableFactoryHelper.GetWellTable();
+            Db = new Database();
+
+            Db.CreateTable<Trajectory>(t => t.Id);
+            Db.CreateTable<Graphic>(g => g.Id);
+            Db.CreateTable<TrajectoryGraphicRelationalTable>(tg => tg.Id);
+            Db.CreateTable<TrajectoryPoint>(tp => tp.Id);
+            Db.CreateTable<Geometry>(ge => ge.Id);
+            Db.CreateTable<Well>(w => w.Id);
+
+            //trajectoryTable = _tableFactoryHelper.GetTrajectoryTable();
+            //graphicTable = _tableFactoryHelper.GetGraphicTable();
+            //trajectoryGraphicRelationalTable = _tableFactoryHelper.GetTrajectoryGraphicRelationalTable();
+            //trajectoryPointTable = _tableFactoryHelper.GetTrajectoryPointTable();
+            //geometryTable = _tableFactoryHelper.GetGeometryTable();
+            //wellTable = _tableFactoryHelper.GetWellTable();
         }
 
         #endregion

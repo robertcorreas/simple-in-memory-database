@@ -12,14 +12,14 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
         {
             var graphic = new Graphic { Title = "title1" };
 
-            graphicTable.Insert(graphic);
+            Db.Insert(graphic);
 
-            Assert.Equal(graphic.Title, graphicTable.Get(graphic.Id).Title);
+            Assert.Equal(graphic.Title, Db.GetOne<Graphic>(graphic.Id).Title);
             graphic.Title = "Other title";
 
-            graphicTable.Update(graphic);
+            Db.Update(graphic);
 
-            Assert.Equal(graphic.Title, graphicTable.Get(graphic.Id).Title);
+            Assert.Equal(graphic.Title, Db.GetOne<Graphic>(graphic.Id).Title);
         }
 
         [Fact(DisplayName = "Should Throw Exception When Update With Invalid Entity")]
@@ -27,15 +27,15 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
         {
             var graphic = new Graphic { Title = "title1" };
 
-            graphicTable.Insert(graphic);
+            Db.Insert(graphic);
 
-            Assert.Equal(graphic.Title, graphicTable.Get(graphic.Id).Title);
+            Assert.Equal(graphic.Title, Db.GetOne<Graphic>(graphic.Id).Title);
             graphic.Title = "Other title";
 
-            var ex = Assert.Throws<ArgumentException>(() => { graphicTable.Update(new Graphic()); });
+            var ex = Assert.Throws<ArgumentException>(() => { Db.Update(new Graphic()); });
 
             Assert.Equal("Invalid entity", ex.Message);
-            Assert.NotEqual(graphic.Title, graphicTable.Get(graphic.Id).Title);
+            Assert.NotEqual(graphic.Title, Db.GetOne<Graphic>(graphic.Id).Title);
         }
     }
 }

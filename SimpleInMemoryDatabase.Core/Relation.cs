@@ -22,11 +22,11 @@ namespace SimpleInMemoryDatabase.Core
         #endregion
 
         public void CreateOneToOne<T1, T2>(Table<T1> tableWithDependency, Table<T2> tableDependency,
-            Expression<Func<T1, Guid>> foreignKey, bool cascateDeletion = true)
+            Func<T1, Guid> foreignKey, bool cascateDeletion = true)
             where T1 : Entity
             where T2 : Entity
         {
-            var compiledForeignKey = foreignKey.Compile();
+
 
             var relationProperties = new RelationProperties
             {
@@ -43,7 +43,7 @@ namespace SimpleInMemoryDatabase.Core
                 }
             });
 
-            relationProperties.OnForeignKey(entity => compiledForeignKey(entity as T1));
+            relationProperties.OnForeignKey(entity => foreignKey(entity as T1));
 
             AddRelationProperties(tableWithDependency.GetType(), relationProperties);
             AddRelationProperties(tableDependency.GetType(), relationProperties);
@@ -57,7 +57,7 @@ namespace SimpleInMemoryDatabase.Core
             }
             else
             {
-                Relations[tableType] = new List<RelationProperties> {relationProperties};
+                Relations[tableType] = new List<RelationProperties> { relationProperties };
             }
         }
 
@@ -69,10 +69,8 @@ namespace SimpleInMemoryDatabase.Core
         }
 
         public void CreateOneToMany<T1, T2>(Table<T1> tableDependency, Table<T2> tableWithDependency,
-            Expression<Func<T2, Guid>> foreignKey, bool cascateDeletion = true) where T1 : Entity where T2 : Entity
+            Func<T2, Guid> foreignKey, bool cascateDeletion = true) where T1 : Entity where T2 : Entity
         {
-            var compiledForeignKey = foreignKey.Compile();
-
             var relationProperties = new RelationProperties
             {
                 RelationType = RelationType.OneToMany,
@@ -88,7 +86,7 @@ namespace SimpleInMemoryDatabase.Core
                 }
             });
 
-            relationProperties.OnForeignKey(entity => compiledForeignKey(entity as T2));
+            relationProperties.OnForeignKey(entity => foreignKey(entity as T2));
 
             AddRelationProperties(tableWithDependency.GetType(), relationProperties);
             AddRelationProperties(tableDependency.GetType(), relationProperties);

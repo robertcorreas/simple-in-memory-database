@@ -1,4 +1,6 @@
-﻿using SimpleInMemoryDatabase.Tests.Helpers;
+﻿using System.Linq;
+using SimpleInMemoryDatabase.Tests.EntitiesTest;
+using SimpleInMemoryDatabase.Tests.Helpers;
 using Xunit;
 
 namespace SimpleInMemoryDatabase.Tests.TableTest
@@ -8,7 +10,7 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
         [Fact(DisplayName = "Should Create WellTable With Primary Key")]
         public void ShouldCreateWellTableWithPrimaryKey()
         {
-            Assert.NotNull(wellTable);
+            Assert.Empty(Db.GetAll<Well>());
         }
     }
 }

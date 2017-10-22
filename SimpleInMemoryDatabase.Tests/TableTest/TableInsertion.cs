@@ -12,9 +12,9 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
         {
             var well = new Well(new Geometry(), new Trajectory());
 
-            wellTable.Insert(well);
+            Db.Insert(well);
 
-            Assert.Equal(well.Id, wellTable.Get(well.Id).Id);
+            Assert.Equal(well.Id, Db.GetOne<Well>(well.Id).Id);
         }
 
         [Fact(DisplayName = "Should Insert Well In Well Table And Inserted Is A Copy")]
@@ -22,10 +22,10 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
         {
             var well = new Well(new Geometry(), new Trajectory());
 
-            wellTable.Insert(well);
+            Db.Insert(well);
 
-            Assert.Equal(well.Id, wellTable.Get(well.Id).Id);
-            Assert.NotEqual(well, wellTable.Get(well.Id));
+            Assert.Equal(well.Id, Db.GetOne<Well>(well.Id).Id);
+            Assert.NotEqual(well, Db.GetOne<Well>(well.Id));
         }
 
         [Fact(DisplayName = "Should Throw Exception If The Same Entity Is Inserted")]
@@ -33,13 +33,13 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
         {
             var well = new Well(new Geometry(), new Trajectory());
 
-            wellTable.Insert(well);
+            Db.Insert(well);
 
-            var ex = Assert.Throws<ArgumentException>(() => { wellTable.Insert(well); });
+            var ex = Assert.Throws<ArgumentException>(() => { Db.Insert(well); });
 
             Assert.Equal("Already exist an entity with this id", ex.Message);
 
-            Assert.True(1 == wellTable.Count);
+            Assert.True(1 == Db.Count<Well>());
         }
     }
 }

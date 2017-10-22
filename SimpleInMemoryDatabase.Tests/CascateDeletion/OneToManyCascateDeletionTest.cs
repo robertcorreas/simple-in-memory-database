@@ -9,7 +9,7 @@ namespace SimpleInMemoryDatabase.Tests.CascateDeletion
         [Fact(DisplayName = "Should Delete In Cascate (OneToMany)")]
         public void ShouldDeleteInCascate()
         {
-            Relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id);
+            Db.CreateOneToMany<Trajectory,TrajectoryPoint>(tp => tp.Trajectory.Id);
 
             var trajectory = new Trajectory();
 
@@ -17,21 +17,21 @@ namespace SimpleInMemoryDatabase.Tests.CascateDeletion
             var tp2 = new TrajectoryPoint(trajectory);
             var tp3 = new TrajectoryPoint(trajectory);
 
-            trajectoryTable.Insert(trajectory);
-            trajectoryPointTable.Insert(tp1);
-            trajectoryPointTable.Insert(tp2);
-            trajectoryPointTable.Insert(tp3);
+            Db.Insert(trajectory);
+            Db.Insert(tp1);
+            Db.Insert(tp2);
+            Db.Insert(tp3);
 
-            trajectoryTable.Delete(trajectory);
+            Db.Delete(trajectory);
 
-            Assert.True(0 == trajectoryTable.Count);
-            Assert.True(0 == trajectoryPointTable.Count);
+            Assert.True(0 == Db.Count<Trajectory>());
+            Assert.True(0 == Db.Count<TrajectoryPoint>());
         }
 
         [Fact(DisplayName = "Should Not Delete In Cascate")]
         public void ShouldNotDeleteInCascate()
         {
-            Relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id, false);
+            Db.CreateOneToMany<Trajectory,TrajectoryPoint>(tp => tp.Trajectory.Id, false);
 
             var trajectory = new Trajectory();
 
@@ -39,21 +39,21 @@ namespace SimpleInMemoryDatabase.Tests.CascateDeletion
             var tp2 = new TrajectoryPoint(trajectory);
             var tp3 = new TrajectoryPoint(trajectory);
 
-            trajectoryTable.Insert(trajectory);
-            trajectoryPointTable.Insert(tp1);
-            trajectoryPointTable.Insert(tp2);
-            trajectoryPointTable.Insert(tp3);
+            Db.Insert(trajectory);
+            Db.Insert(tp1);
+            Db.Insert(tp2);
+            Db.Insert(tp3);
 
-            trajectoryTable.Delete(trajectory);
+            Db.Delete(trajectory);
 
-            Assert.True(0 == trajectoryTable.Count);
-            Assert.True(3 == trajectoryPointTable.Count);
+            Assert.True(0 == Db.Count<Trajectory>());
+            Assert.True(3 == Db.Count<TrajectoryPoint>());
         }
 
         [Fact(DisplayName = "Should Delete In Cascate With Multiple OneToMany")]
         public void ShouldDeleteInCascateWithMultipleOneToMany()
         {
-            Relation.CreateOneToMany(trajectoryTable, trajectoryPointTable, tp => tp.Trajectory.Id, true);
+            Db.CreateOneToMany<Trajectory,TrajectoryPoint>(tp => tp.Trajectory.Id, true);
 
             var trajectory1 = new Trajectory();
             var trajectory2 = new Trajectory();
@@ -63,21 +63,21 @@ namespace SimpleInMemoryDatabase.Tests.CascateDeletion
             var tp3 = new TrajectoryPoint(trajectory2);
             var tp4 = new TrajectoryPoint(trajectory1);
 
-            trajectoryTable.Insert(trajectory1);
-            trajectoryTable.Insert(trajectory2);
-            trajectoryPointTable.Insert(tp1);
-            trajectoryPointTable.Insert(tp2);
-            trajectoryPointTable.Insert(tp3);
-            trajectoryPointTable.Insert(tp4);
+            Db.Insert(trajectory1);
+            Db.Insert(trajectory2);
+            Db.Insert(tp1);
+            Db.Insert(tp2);
+            Db.Insert(tp3);
+            Db.Insert(tp4);
 
-            trajectoryTable.Delete(trajectory1);
+            Db.Delete(trajectory1);
 
-            Assert.True(1 == trajectoryTable.Count);
-            Assert.True(2 == trajectoryPointTable.Count);
+            Assert.True(1 == Db.Count<Trajectory>());
+            Assert.True(2 == Db.Count<TrajectoryPoint>());
 
-            Assert.Equal(trajectory2.Id, trajectoryTable.Get(trajectory2.Id).Id);
+            Assert.Equal(trajectory2.Id, Db.GetOne<Trajectory>(trajectory2.Id).Id);
 
-            foreach (var trajectoryPoint in trajectoryPointTable.GetAll())
+            foreach (var trajectoryPoint in Db.GetAll<TrajectoryPoint>())
             {
                 Assert.Equal(trajectory2.Id, trajectoryPoint.Trajectory.Id);
             }
