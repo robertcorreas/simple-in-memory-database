@@ -5,6 +5,16 @@ namespace SimpleInMemoryDatabase.Core.DatabaseCore
 {
     internal class RelationProperties
     {
+        internal void OnDeleteOperation(Action<Type, Guid> action)
+        {
+            DeleteOperation = action;
+        }
+
+        internal void OnForeignKey(Func<Entity, Guid> fk)
+        {
+            ForeignKey = fk;
+        }
+
         #region Propriedades
 
         internal RelationType RelationType { get; set; }
@@ -17,15 +27,5 @@ namespace SimpleInMemoryDatabase.Core.DatabaseCore
         internal Action<Type, Guid> DeleteOperation { get; private set; }
 
         #endregion
-
-        internal void OnDeleteOperation(Action<Type, Guid> action)
-        {
-            DeleteOperation = action;
-        }
-
-        internal void OnForeignKey(Func<Entity, Guid> fk)
-        {
-            ForeignKey = fk;
-        }
     }
 }

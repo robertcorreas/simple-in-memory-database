@@ -53,6 +53,7 @@
     <Compile Include="Api\Entity.cs" />
     <Compile Include="Api\IDatabase.cs" />
     <Compile Include="DatabaseCore\Index.cs" />
+    <Compile Include="DatabaseCore\ITable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DatabaseCore\Relation.cs" />
     <Compile Include="DatabaseCore\RelationProperties.cs" />

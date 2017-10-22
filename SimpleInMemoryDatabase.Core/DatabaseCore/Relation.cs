@@ -7,6 +7,12 @@ namespace SimpleInMemoryDatabase.Core.DatabaseCore
 {
     internal class Relation
     {
+        #region Propriedades
+
+        private readonly Dictionary<Type, List<RelationProperties>> _relations;
+
+        #endregion
+
         #region Construtores
 
         internal Relation()
@@ -16,19 +22,11 @@ namespace SimpleInMemoryDatabase.Core.DatabaseCore
 
         #endregion
 
-        #region Propriedades
-
-        private readonly Dictionary<Type, List<RelationProperties>> _relations;
-
-        #endregion
-
         internal void CreateOneToOne<T1, T2>(Table<T1> tableWithDependency, Table<T2> tableDependency,
             Func<T1, Guid> foreignKey, bool cascateDeletion = true)
             where T1 : Entity
             where T2 : Entity
         {
-
-
             var relationProperties = new RelationProperties
             {
                 RelationType = RelationType.OneToOne,
@@ -39,9 +37,7 @@ namespace SimpleInMemoryDatabase.Core.DatabaseCore
             relationProperties.OnDeleteOperation((tableType, fk) =>
             {
                 if (tableType == tableDependency.GetType() && cascateDeletion)
-                {
                     tableDependency.Delete(fk);
-                }
             });
 
             relationProperties.OnForeignKey(entity => foreignKey(entity as T1));
@@ -53,13 +49,9 @@ namespace SimpleInMemoryDatabase.Core.DatabaseCore
         private void AddRelationProperties(Type tableType, RelationProperties relationProperties)
         {
             if (_relations.ContainsKey(tableType))
-            {
                 _relations[tableType].Add(relationProperties);
-            }
             else
-            {
-                _relations[tableType] = new List<RelationProperties> { relationProperties };
-            }
+                _relations[tableType] = new List<RelationProperties> {relationProperties};
         }
 
         internal List<RelationProperties> Get(Type tableType)
@@ -82,9 +74,7 @@ namespace SimpleInMemoryDatabase.Core.DatabaseCore
             relationProperties.OnDeleteOperation((tableType, fk) =>
             {
                 if (tableType == tableWithDependency.GetType() && cascateDeletion)
-                {
                     tableWithDependency.Delete(t => relationProperties.ForeignKey(t) == fk);
-                }
             });
 
             relationProperties.OnForeignKey(entity => foreignKey(entity as T2));
@@ -115,9 +105,8 @@ namespace SimpleInMemoryDatabase.Core.DatabaseCore
             relationProperties.OnDeleteOperation((tableType, fk) =>
             {
                 if ((tableType == table1.GetType() || tableType == table2.GetType()) && cascateDeletion)
-                {
-                    relationalTable.Delete(t => relationProperties.ForeignKey1(t) == fk || relationProperties.ForeignKey2(t) == fk);
-                }
+                    relationalTable.Delete(t => relationProperties.ForeignKey1(t) == fk ||
+                                                relationProperties.ForeignKey2(t) == fk);
             });
 
             AddRelationProperties(table1.GetType(), relationProperties);

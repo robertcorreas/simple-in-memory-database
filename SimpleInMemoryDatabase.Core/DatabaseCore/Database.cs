@@ -16,7 +16,6 @@ namespace SimpleInMemoryDatabase.Core.DatabaseCore
             _tables = new Dictionary<Type, ITable>();
             _relation = new Relation();
             _index = new Index();
-            ;
         }
 
         public void CreateTable<T>(Expression<Func<T, Guid>> primaryKey) where T : Entity
@@ -102,6 +101,7 @@ namespace SimpleInMemoryDatabase.Core.DatabaseCore
         {
             return _tables[typeof(T)].Search(predicate);
         }
+
         public long IndexCount()
         {
             return _index.Count;
