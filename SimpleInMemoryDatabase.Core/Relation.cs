@@ -4,24 +4,24 @@ using System.Linq.Expressions;
 
 namespace SimpleInMemoryDatabase.Core
 {
-    public class Relation
+    internal class Relation
     {
         #region Construtores
 
-        public Relation()
+        internal Relation()
         {
-            Relations = new Dictionary<Type, List<RelationProperties>>();
+            _relations = new Dictionary<Type, List<RelationProperties>>();
         }
 
         #endregion
 
         #region Propriedades
 
-        public Dictionary<Type, List<RelationProperties>> Relations { get; set; }
+        private readonly Dictionary<Type, List<RelationProperties>> _relations;
 
         #endregion
 
-        public void CreateOneToOne<T1, T2>(Table<T1> tableWithDependency, Table<T2> tableDependency,
+        internal void CreateOneToOne<T1, T2>(Table<T1> tableWithDependency, Table<T2> tableDependency,
             Func<T1, Guid> foreignKey, bool cascateDeletion = true)
             where T1 : Entity
             where T2 : Entity
@@ -51,24 +51,24 @@ namespace SimpleInMemoryDatabase.Core
 
         private void AddRelationProperties(Type tableType, RelationProperties relationProperties)
         {
-            if (Relations.ContainsKey(tableType))
+            if (_relations.ContainsKey(tableType))
             {
-                Relations[tableType].Add(relationProperties);
+                _relations[tableType].Add(relationProperties);
             }
             else
             {
-                Relations[tableType] = new List<RelationProperties> { relationProperties };
+                _relations[tableType] = new List<RelationProperties> { relationProperties };
             }
         }
 
-        public List<RelationProperties> Get(Type tableType)
+        internal List<RelationProperties> Get(Type tableType)
         {
-            if (Relations.ContainsKey(tableType))
-                return Relations[tableType];
+            if (_relations.ContainsKey(tableType))
+                return _relations[tableType];
             return new List<RelationProperties>();
         }
 
-        public void CreateOneToMany<T1, T2>(Table<T1> tableDependency, Table<T2> tableWithDependency,
+        internal void CreateOneToMany<T1, T2>(Table<T1> tableDependency, Table<T2> tableWithDependency,
             Func<T2, Guid> foreignKey, bool cascateDeletion = true) where T1 : Entity where T2 : Entity
         {
             var relationProperties = new RelationProperties
@@ -92,7 +92,7 @@ namespace SimpleInMemoryDatabase.Core
             AddRelationProperties(tableDependency.GetType(), relationProperties);
         }
 
-        public void CreateManyToMany<T1, T2, T3>(Table<T1> table1, Table<T2> table2, Table<T3> relationalTable,
+        internal void CreateManyToMany<T1, T2, T3>(Table<T1> table1, Table<T2> table2, Table<T3> relationalTable,
             Expression<Func<T3, Guid>> foreignKey1, Expression<Func<T3, Guid>> foreignKey2, bool cascateDeletion = true)
             where T1 : Entity
             where T2 : Entity
@@ -115,8 +115,7 @@ namespace SimpleInMemoryDatabase.Core
             {
                 if ((tableType == table1.GetType() || tableType == table2.GetType()) && cascateDeletion)
                 {
-                    relationalTable.Delete(
-                        t => relationProperties.ForeignKey1(t) == fk || relationProperties.ForeignKey2(t) == fk);
+                    relationalTable.Delete(t => relationProperties.ForeignKey1(t) == fk || relationProperties.ForeignKey2(t) == fk);
                 }
             });
 

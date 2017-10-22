@@ -10,7 +10,7 @@ using Nuclex.Cloning;
 
 namespace SimpleInMemoryDatabase.Core
 {
-    public class Database
+    public class Database : IDatabase
     {
         private readonly Dictionary<Type, ITable> _tables;
         private readonly Relation _relation;

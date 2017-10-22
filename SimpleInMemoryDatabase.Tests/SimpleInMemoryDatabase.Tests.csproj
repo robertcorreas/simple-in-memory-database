@@ -71,7 +71,6 @@
     <Compile Include="EntitiesTest\TrajectoryGraphicRelationalTable.cs" />
     <Compile Include="EntitiesTest\TrajectoryPoint.cs" />
     <Compile Include="EntitiesTest\Well.cs" />
-    <Compile Include="Helpers\TableFactoryHelper.cs" />
     <Compile Include="Helpers\TestBase.cs" />
     <Compile Include="PerformanceTests\TablePerformanceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

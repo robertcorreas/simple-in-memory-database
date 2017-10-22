@@ -15,7 +15,7 @@ namespace SimpleInMemoryDatabase.Core
 
         #region Propriedades
 
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
 
         #endregion
     }

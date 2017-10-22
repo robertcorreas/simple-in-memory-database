@@ -3,38 +3,38 @@ using System.Collections.Generic;
 
 namespace SimpleInMemoryDatabase.Core
 {
-    public class Index
+    internal class Index
     {
         #region Construtores
 
-        public Index()
+        internal Index()
         {
             _indexes = new HashSet<Guid>();
         }
 
         #endregion
 
-        #region Propriedades
-
-        private HashSet<Guid> _indexes;
-
-        public int Count => _indexes.Count;
-
-        #endregion
-
-        public bool Contains(Guid foreignKey)
+        internal bool Contains(Guid foreignKey)
         {
             return _indexes.Contains(foreignKey);
         }
 
-        public void CreateIndex(Guid id)
+        internal void CreateIndex(Guid id)
         {
             _indexes.Add(id);
         }
 
-        public void DeleteIndex(Guid primaryKey)
+        internal void DeleteIndex(Guid primaryKey)
         {
             _indexes.Remove(primaryKey);
         }
+
+        #region Propriedades
+
+        private readonly HashSet<Guid> _indexes;
+
+        internal int Count => _indexes.Count;
+
+        #endregion
     }
 }

@@ -1,6 +1,6 @@
 namespace SimpleInMemoryDatabase.Core
 {
-    public enum RelationType
+    internal enum RelationType
     {
         OneToOne,
         OneToMany,
