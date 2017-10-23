@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nuclex.Cloning;
+using Force.DeepCloner;
 using SimpleInMemoryDatabase.Lib.Api;
 
 namespace SimpleInMemoryDatabase.Lib.Core
@@ -78,7 +78,7 @@ namespace SimpleInMemoryDatabase.Lib.Core
 
             ValidateFk(entity, GetType());
 
-            var entityCopy = ExpressionTreeCloner.DeepFieldClone(entity);
+            var entityCopy = entity.DeepClone();
 
             _tuples.Add(_primaryKey(entity), entityCopy);
             _index.CreateIndex(_primaryKey(entityCopy));
@@ -114,7 +114,7 @@ namespace SimpleInMemoryDatabase.Lib.Core
 
         internal T Get(Guid primaryKey)
         {
-            return ExpressionTreeCloner.DeepFieldClone(_tuples[primaryKey]);
+            return _tuples[primaryKey].DeepClone();
         }
 
         internal void Delete(Guid primaryKey)
@@ -166,7 +166,7 @@ namespace SimpleInMemoryDatabase.Lib.Core
 
         internal List<T> GetAll()
         {
-            return _tuples.Values.Select(ExpressionTreeCloner.DeepFieldClone).ToList();
+            return _tuples.Values.ToList().DeepClone();
         }
 
         internal void Delete(Func<T, bool> query)
@@ -188,7 +188,7 @@ namespace SimpleInMemoryDatabase.Lib.Core
 
         internal IEnumerable<T> Search(Func<T, bool> predicate)
         {
-            return _tuples.Values.Where(predicate).Select(ExpressionTreeCloner.DeepFieldClone);
+            return _tuples.Values.Where(predicate).DeepClone();
         }
     }
 }
