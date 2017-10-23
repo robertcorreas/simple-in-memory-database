@@ -67,6 +67,18 @@ namespace SimpleInMemoryDatabase.Lib.Core
             _tables[typeof(T)].Insert(entities);
         }
 
+        public void InsertOrUpdate<T>(T entity) where T : Entity
+        {
+            try
+            {
+                _tables[typeof(T)].Update(entity);
+            }
+            catch (Exception e)
+            {
+                _tables[typeof(T)].Insert(entity);
+            }
+        }
+
         public void Delete<T>(T entity) where T : Entity
         {
             _tables[typeof(T)].Delete(entity);

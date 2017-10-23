@@ -41,5 +41,31 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
 
             Assert.True(1 == Db.Count<Well>());
         }
+
+        [Fact(DisplayName = "Should insert if update")]
+        public void ShouldInsertOrUpdate()
+        {
+            var well = new Well(new Geometry(), new Trajectory());
+
+            Db.InsertOrUpdate(well);
+
+            Assert.Equal(well.Id, Db.GetOne<Well>(well.Id).Id);
+            Assert.NotEqual(well, Db.GetOne<Well>(well.Id));
+        }
+
+        [Fact(DisplayName = "Should update if not insert")]
+        public void ShouldUpdateIfNotInsert()
+        {
+            var well = new Well(new Geometry(), new Trajectory());
+            well.Nome = "Poço";
+            Db.Insert(well);
+
+            well.Nome = "Novo Poço";
+            Db.InsertOrUpdate(well);
+
+            Assert.Equal(well.Id, Db.GetOne<Well>(well.Id).Id);
+            Assert.NotEqual(well, Db.GetOne<Well>(well.Id));
+            Assert.Equal(well.Nome, Db.GetOne<Well>(well.Id).Nome);
+        }
     }
 }

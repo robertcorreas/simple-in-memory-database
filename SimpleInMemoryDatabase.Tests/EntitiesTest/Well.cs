@@ -16,6 +16,7 @@ namespace SimpleInMemoryDatabase.Tests.EntitiesTest
 
         #region Propriedades
 
+        public string Nome { get; set; }
         public Geometry Geometry { get; set; }
         public Trajectory Trajectory { get; private set; }
 

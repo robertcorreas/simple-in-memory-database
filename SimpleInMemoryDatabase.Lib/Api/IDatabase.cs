@@ -23,6 +23,7 @@ namespace SimpleInMemoryDatabase.Lib.Api
 
         void Insert<T>(T entity) where T : Entity;
         void Insert<T>(IEnumerable<T> entities) where T : Entity;
+        void InsertOrUpdate<T>(T entity) where T : Entity;
         void Delete<T>(T entity) where T : Entity;
         IEnumerable<T> GetAll<T>() where T : Entity;
         T GetOne<T>(Guid pk) where T : Entity;
