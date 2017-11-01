@@ -29,7 +29,9 @@ namespace SimpleInMemoryDatabase.Lib.Api
         T GetOne<T>(Guid pk) where T : Entity;
         long Count<T>() where T : Entity;
         void Delete<T>(IEnumerable<T> entities, Func<T, bool> query) where T : Entity;
+        void DeleteAll<T>();
         void Update<T>(T entity) where T : Entity;
+        void Update<T>(IEnumerable<T> entity) where T : Entity;
         IEnumerable<T> Search<T>(Func<T, bool> predicate) where T : Entity;
 
         long IndexCount();

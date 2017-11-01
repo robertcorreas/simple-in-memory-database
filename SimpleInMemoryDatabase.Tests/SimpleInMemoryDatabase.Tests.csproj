@@ -79,6 +79,7 @@
     <Compile Include="RelationTest\OneToOneTest\OneToOneInsertTest.cs" />
     <Compile Include="RelationTest\OneToOneTest\OneToOneUpdateTest.cs" />
     <Compile Include="TableTest\TableCreationTests.cs" />
+    <Compile Include="TableTest\TableDeleteTests.cs" />
     <Compile Include="TableTest\TableGetAndGetAllTest.cs" />
     <Compile Include="TableTest\TableInsertion.cs" />
     <Compile Include="TableTest\TableSearchTest.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SimpleInMemoryDatabase.Tests.EntitiesTest;
 using SimpleInMemoryDatabase.Tests.Helpers;
 using Xunit;
@@ -36,6 +37,66 @@ namespace SimpleInMemoryDatabase.Tests.TableTest
 
             Assert.Equal("Invalid entity", ex.Message);
             Assert.NotEqual(graphic.Title, Db.GetOne<Graphic>(graphic.Id).Title);
+        }
+
+
+        [Fact]
+        public void ShouldUpdateMultipleItens()
+        {
+            var graphic1 = new Graphic { Title = "title1" };
+            var graphic2 = new Graphic { Title = "title2" };
+
+            Db.Insert(graphic1);
+            Db.Insert(graphic2);
+
+            Assert.Equal(graphic1.Title, Db.GetOne<Graphic>(graphic1.Id).Title);
+            Assert.Equal(graphic2.Title, Db.GetOne<Graphic>(graphic2.Id).Title);
+            graphic1.Title = "Other title 1";
+            graphic2.Title = "Other title 2";
+
+
+            Db.Update<Graphic>(new List<Graphic>(){graphic1, graphic2});
+
+            Assert.Equal(graphic1.Title, Db.GetOne<Graphic>(graphic1.Id).Title);
+            Assert.Equal(graphic2.Title, Db.GetOne<Graphic>(graphic2.Id).Title);
+        }
+
+        [Fact]
+        public void ShouldUpdateWithRefereceSecure()
+        {
+            var graphic = new Graphic { Title = "title1" };
+
+            Db.Insert(graphic);
+
+            Assert.Equal(graphic.Title, Db.GetOne<Graphic>(graphic.Id).Title);
+            graphic.Title = "Other title";
+
+            Db.Update(graphic);
+
+            graphic.Title = "aaa";
+
+            Assert.NotEqual(graphic.Title, Db.GetOne<Graphic>(graphic.Id).Title);
+        }
+
+        [Fact]
+        public void ShouldUpdateMultipleItensWithRefereceSecure()
+        {
+            var graphic1 = new Graphic { Title = "title1" };
+            var graphic2 = new Graphic { Title = "title2" };
+
+            Db.Insert(graphic1);
+            Db.Insert(graphic2);
+
+            graphic1.Title = "Other title 1";
+            graphic2.Title = "Other title 2";
+
+            Db.Update<Graphic>(new List<Graphic>() { graphic1, graphic2 });
+
+            graphic1.Title = "aaaa";
+            graphic2.Title = "aaaa";
+
+            Assert.NotEqual(graphic1.Title, Db.GetOne<Graphic>(graphic1.Id).Title);
+            Assert.NotEqual(graphic2.Title, Db.GetOne<Graphic>(graphic2.Id).Title);
         }
     }
 }

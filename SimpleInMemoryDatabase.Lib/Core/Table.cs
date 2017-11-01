@@ -28,7 +28,7 @@ namespace SimpleInMemoryDatabase.Lib.Core
 
         public void Insert<T1>(T1 entity) where T1 : Entity
         {
-            Insert(entity as T);
+            Insert(entity.DeepClone() as T);
         }
 
         public void Insert<T1>(IEnumerable<T1> entities) where T1 : Entity
@@ -51,6 +51,11 @@ namespace SimpleInMemoryDatabase.Lib.Core
             Delete(entities.Cast<T>(), query as Func<T, bool>);
         }
 
+        public void DeleteAll<T1>()
+        {
+            DeleteAll();
+        }
+
         long ITable.Count()
         {
             return _tuples.Count;
@@ -63,7 +68,17 @@ namespace SimpleInMemoryDatabase.Lib.Core
 
         public void Update<T1>(T1 entity) where T1 : Entity
         {
-            Update(entity as T);
+            Update(entity.DeepClone() as T);
+        }
+
+        public void Update<T1>(IEnumerable<T1> entities) where T1 : Entity
+        {
+            var clonedEntitites = entities.DeepClone();
+
+            foreach (var entity in clonedEntitites)
+            {
+                Update(entity as T);
+            }
         }
 
         public IEnumerable<T1> Search<T1>(Func<T1, bool> predicate) where T1 : Entity
@@ -78,15 +93,15 @@ namespace SimpleInMemoryDatabase.Lib.Core
 
             ValidateFk(entity, GetType());
 
-            var entityCopy = entity.DeepClone();
-
-            _tuples.Add(_primaryKey(entity), entityCopy);
-            _index.CreateIndex(_primaryKey(entityCopy));
+            _tuples.Add(_primaryKey(entity), entity);
+            _index.CreateIndex(_primaryKey(entity));
         }
 
         public void Insert(IEnumerable<T> entities)
         {
-            foreach (var entity in entities)
+            var clonedEntities = entities.DeepClone();
+
+            foreach (var entity in clonedEntities)
                 Insert(entity);
         }
 
@@ -154,7 +169,7 @@ namespace SimpleInMemoryDatabase.Lib.Core
 
         internal void Delete(IEnumerable<T> entities)
         {
-            foreach (var entity in entities)
+            foreach (var entity in entities.ToArray())
                 Delete(entity);
         }
 
@@ -162,6 +177,11 @@ namespace SimpleInMemoryDatabase.Lib.Core
         {
             foreach (var entity in entities.Where(query))
                 Delete(entity);
+        }
+
+        internal void DeleteAll()
+        {
+            this.Delete(_tuples.Values as IEnumerable<T>);
         }
 
         internal List<T> GetAll()

@@ -104,9 +104,19 @@ namespace SimpleInMemoryDatabase.Lib.Core
             _tables[typeof(T)].Delete(entities, query);
         }
 
+        public void DeleteAll<T>()
+        {
+            _tables[typeof(T)].DeleteAll<T>();
+        }
+
         public void Update<T>(T entity) where T : Entity
         {
             _tables[typeof(T)].Update(entity);
+        }
+
+        public void Update<T>(IEnumerable<T> entities) where T : Entity
+        {
+            _tables[typeof(T)].Update(entities);
         }
 
         public IEnumerable<T> Search<T>(Func<T, bool> predicate) where T : Entity
