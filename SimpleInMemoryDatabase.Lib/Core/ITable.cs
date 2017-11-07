@@ -11,9 +11,11 @@ namespace SimpleInMemoryDatabase.Lib.Core
         IEnumerable<T> GetAll<T>() where T : Entity;
         void Delete<T>(T entity) where T : Entity;
         void Delete<T>(IEnumerable<T> entities, Func<T, bool> query) where T : Entity;
+        void DeleteAll<T>();
         long Count();
         T GetOne<T>(Guid pk) where T : Entity;
         void Update<T>(T entity) where T : Entity;
+        void Update<T>(IEnumerable<T> entities) where T : Entity;
         IEnumerable<T> Search<T>(Func<T, bool> predicate) where T : Entity;
     }
 }
