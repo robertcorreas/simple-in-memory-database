@@ -6,7 +6,7 @@ namespace SimpleInMemoryDatabase.Lib.Api
 {
     public interface IDatabase
     {
-        void CreateTable<T>(Expression<Func<T, Guid>> primaryKey) where T : Entity;
+        void CreateTable<T>() where T : Entity;
 
         void CreateManyToMany<T1, T2, T3>(Expression<Func<T3, Guid>> fk1, Expression<Func<T3, Guid>> fk2,
             bool cascateDeletion = true)
