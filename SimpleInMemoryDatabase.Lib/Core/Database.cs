@@ -18,10 +18,9 @@ namespace SimpleInMemoryDatabase.Lib.Core
             _index = new Index();
         }
 
-        public void CreateTable<T>(Expression<Func<T, Guid>> primaryKey) where T : Entity
+        public void CreateTable<T>() where T : Entity
         {
-            primaryKey.Compile();
-            var t = new Table<T>(primaryKey.Compile(), _relation, _index);
+            var t = new Table<T>(_relation, _index);
             _tables.Add(typeof(T), t);
         }
 

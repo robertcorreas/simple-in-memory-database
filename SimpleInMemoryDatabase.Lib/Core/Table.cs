@@ -15,10 +15,10 @@ namespace SimpleInMemoryDatabase.Lib.Core
 
         #region Construtores
 
-        internal Table(Func<T, Guid> primaryKey, Relation relation = null,
+        internal Table(Relation relation = null,
             Index index = null)
         {
-            _primaryKey = primaryKey;
+            _primaryKey = x => x.Id;
             _tuples = new Dictionary<Guid, T>();
             _index = index ?? new Index();
             _relation = relation ?? new Relation();

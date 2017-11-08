@@ -13,12 +13,12 @@ namespace SimpleInMemoryDatabase.Tests.Helpers
         {
             Db = DatabaseCreator.Create();
 
-            Db.CreateTable<Trajectory>(t => t.Id);
-            Db.CreateTable<Graphic>(g => g.Id);
-            Db.CreateTable<TrajectoryGraphicRelationalTable>(tg => tg.Id);
-            Db.CreateTable<TrajectoryPoint>(tp => tp.Id);
-            Db.CreateTable<Geometry>(ge => ge.Id);
-            Db.CreateTable<Well>(w => w.Id);
+            Db.CreateTable<Trajectory>();
+            Db.CreateTable<Graphic>();
+            Db.CreateTable<TrajectoryGraphicRelationalTable>();
+            Db.CreateTable<TrajectoryPoint>();
+            Db.CreateTable<Geometry>();
+            Db.CreateTable<Well>();
         }
 
         #endregion
