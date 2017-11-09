@@ -139,21 +139,21 @@ namespace SimpleInMemoryDatabase.Lib.Core
 
             var relationProperties = _relation.Get(tableType);
 
-            foreach (var relationPropertie in relationProperties)
-                if (relationPropertie.RelationType == RelationType.OneToOne)
+            foreach (var relationProperty in relationProperties)
+                if (relationProperty.RelationType == RelationType.OneToOne)
                 {
-                    if (relationPropertie.TableWithDependency == tableType)
-                        relationPropertie.DeleteOperation(relationPropertie.TableDependency,
-                            relationPropertie.ForeignKey(entity));
+                    if (relationProperty.TableWithDependency == tableType)
+                        relationProperty.DeleteOperation(relationProperty.TableDependency,
+                            relationProperty.ForeignKey(entity));
                 }
-                else if (relationPropertie.RelationType == RelationType.OneToMany)
+                else if (relationProperty.RelationType == RelationType.OneToMany)
                 {
-                    if (relationPropertie.TableDependency == tableType)
-                        relationPropertie.DeleteOperation(relationPropertie.TableWithDependency, primaryKey);
+                    if (relationProperty.TableDependency == tableType)
+                        relationProperty.DeleteOperation(relationProperty.TableWithDependency, primaryKey);
                 }
                 else
                 {
-                    relationPropertie.DeleteOperation(tableType, primaryKey);
+                    relationProperty.DeleteOperation(tableType, primaryKey);
                 }
 
             _tuples.Remove(primaryKey);
