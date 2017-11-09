@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SimpleInMemoryDatabase.LibStandard\SimpleInMemoryDatabase.Lib.csproj" />
+    <ProjectReference Include="..\SimpleInMemoryDatabase.Lib\SimpleInMemoryDatabase.Lib.csproj" />
   </ItemGroup>
 
 </Project>

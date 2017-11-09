@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleInMemoryDatabase.Lib.Tests", "SimpleInMemoryDatabase.LibStandard.Tests\SimpleInMemoryDatabase.Lib.Tests.csproj", "{FF3B1381-6609-4B17-A25D-AB4AEAA7A140}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleInMemoryDatabase.Lib.Tests", "SimpleInMemoryDatabase.Lib.Tests\SimpleInMemoryDatabase.Lib.Tests.csproj", "{FF3B1381-6609-4B17-A25D-AB4AEAA7A140}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleInMemoryDatabase.Lib", "SimpleInMemoryDatabase.LibStandard\SimpleInMemoryDatabase.Lib.csproj", "{1FAC6F9A-A32A-4947-9A82-0B2B98162E1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleInMemoryDatabase.Lib", "SimpleInMemoryDatabase.Lib\SimpleInMemoryDatabase.Lib.csproj", "{1FAC6F9A-A32A-4947-9A82-0B2B98162E1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
