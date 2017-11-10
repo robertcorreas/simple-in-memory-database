@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using SimpleInMemoryDatabase.Tests.EntitiesTest;
+﻿using SimpleInMemoryDatabase.Tests.EntitiesTest;
 using SimpleInMemoryDatabase.Tests.Helpers;
 using Xunit;
 
-namespace SimpleInMemoryDatabase.Tests.TableTest
+namespace SimpleInMemoryDatabase.Lib.Tests.TableTests
 {
     public class TableCreationTests : TestBase
     {

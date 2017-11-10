@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using SimpleInMemoryDatabase.Tests.EntitiesTest;
 using SimpleInMemoryDatabase.Tests.Helpers;
 using Xunit;
 
-namespace SimpleInMemoryDatabase.Tests.TableTest
+namespace SimpleInMemoryDatabase.Lib.Tests.TableTests
 {
     public class TableDeleteTests : TestBase
     {

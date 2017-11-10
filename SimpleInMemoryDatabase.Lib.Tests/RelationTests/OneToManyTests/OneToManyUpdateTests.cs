@@ -3,9 +3,9 @@ using SimpleInMemoryDatabase.Tests.EntitiesTest;
 using SimpleInMemoryDatabase.Tests.Helpers;
 using Xunit;
 
-namespace SimpleInMemoryDatabase.Tests.RelationTest.OneToManyTest
+namespace SimpleInMemoryDatabase.Lib.Tests.RelationTests.OneToManyTests
 {
-    public class OneToManyUpdateTest : TestBase
+    public class OneToManyUpdateTests : TestBase
     {
         [Fact(DisplayName = "Update if Fk Satisfy (OneToMany)")]
         public void ShouldUpdateIfFkSatisfy()

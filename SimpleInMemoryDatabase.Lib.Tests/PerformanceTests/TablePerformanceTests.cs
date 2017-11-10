@@ -7,7 +7,7 @@ using Xunit;
 
 namespace SimpleInMemoryDatabase.Tests.PerformanceTests
 {
-    public class TablePerformanceTest : TestBase
+    public class TablePerformanceTests : TestBase
     {
         [Fact(DisplayName = "Should Insert In Good Time OneToMany")]
         public void ShouldInsertInGoodTimeOneToMany()

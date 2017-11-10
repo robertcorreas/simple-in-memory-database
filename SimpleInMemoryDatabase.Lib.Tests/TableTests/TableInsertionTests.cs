@@ -3,9 +3,9 @@ using SimpleInMemoryDatabase.Tests.EntitiesTest;
 using SimpleInMemoryDatabase.Tests.Helpers;
 using Xunit;
 
-namespace SimpleInMemoryDatabase.Tests.TableTest
+namespace SimpleInMemoryDatabase.Lib.Tests.TableTests
 {
-    public class TableInsertion : TestBase
+    public class TableInsertionTests : TestBase
     {
         [Fact(DisplayName = "Should Insert Well In Well Table")]
         public void ShouldInsertWellInWellTable()

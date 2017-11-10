@@ -2,9 +2,9 @@
 using SimpleInMemoryDatabase.Tests.Helpers;
 using Xunit;
 
-namespace SimpleInMemoryDatabase.Tests.CascateDeletion
+namespace SimpleInMemoryDatabase.Lib.Tests.CascateDeletionTests
 {
-    public class OneToManyCascateDeletionTest : TestBase
+    public class OneToManyCascateDeletionTests : TestBase
     {
         [Fact(DisplayName = "Should Delete In Cascate (OneToMany)")]
         public void ShouldDeleteInCascate()

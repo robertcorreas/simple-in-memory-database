@@ -3,9 +3,9 @@ using SimpleInMemoryDatabase.Tests.EntitiesTest;
 using SimpleInMemoryDatabase.Tests.Helpers;
 using Xunit;
 
-namespace SimpleInMemoryDatabase.Tests.RelationTest.OneToOneTest
+namespace SimpleInMemoryDatabase.Lib.Tests.RelationTests.OneToOneTests
 {
-    public class OneToOneInsertTest : TestBase
+    public class OneToOneInsertTests : TestBase
     {
         [Fact(DisplayName = "Should Throw Exception When Fk Dependency Not Satisfy (OneToOne)")]
         public void ShouldThrowExceptionWhenFkDependencyNotSatisfy()

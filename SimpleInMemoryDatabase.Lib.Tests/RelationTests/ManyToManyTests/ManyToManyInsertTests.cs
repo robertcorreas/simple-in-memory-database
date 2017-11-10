@@ -4,9 +4,9 @@ using SimpleInMemoryDatabase.Tests.EntitiesTest;
 using SimpleInMemoryDatabase.Tests.Helpers;
 using Xunit;
 
-namespace SimpleInMemoryDatabase.Tests.RelationTest.ManyToManyTest
+namespace SimpleInMemoryDatabase.Lib.Tests.RelationTests.ManyToManyTests
 {
-    public class ManyToManyInsertTest : TestBase
+    public class ManyToManyInsertTests : TestBase
     {
         [Fact(DisplayName = "Should Insert ManyToMany If Fk Satisfy")]
         public void ShouldInsertManyToManyIfFkSatisfy()

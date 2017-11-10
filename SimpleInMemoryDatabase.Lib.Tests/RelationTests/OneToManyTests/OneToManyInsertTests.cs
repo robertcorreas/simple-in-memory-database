@@ -3,9 +3,9 @@ using SimpleInMemoryDatabase.Tests.EntitiesTest;
 using SimpleInMemoryDatabase.Tests.Helpers;
 using Xunit;
 
-namespace SimpleInMemoryDatabase.Tests.RelationTest.OneToManyTest
+namespace SimpleInMemoryDatabase.Lib.Tests.RelationTests.OneToManyTests
 {
-    public class OneToManyInsertTest : TestBase
+    public class OneToManyInsertTests : TestBase
     {
         [Fact(DisplayName = "Should Insert OneToMany If Fk Is Satisfy")]
         public void ShouldInsertOneToManyIfFkIsSatisfy()
