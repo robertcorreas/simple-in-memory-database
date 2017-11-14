@@ -103,7 +103,7 @@ namespace SimpleInMemoryDatabase.Lib.Core
             _tables[typeof(T)].Delete(entities, query);
         }
 
-        public void DeleteAll<T>()
+        public void DeleteAll<T>() where T : Entity
         {
             _tables[typeof(T)].DeleteAll<T>();
         }

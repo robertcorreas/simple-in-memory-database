@@ -51,7 +51,7 @@ namespace SimpleInMemoryDatabase.Lib.Core
             Delete(entities.Cast<T>(), query as Func<T, bool>);
         }
 
-        public void DeleteAll<T1>()
+        public void DeleteAll<T1>() where T1 : Entity
         {
             DeleteAll();
         }
