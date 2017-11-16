@@ -8,7 +8,7 @@ namespace SimpleInMemoryDatabase.Lib.Tests.TableTests
 {
     public class TableUpdateTests : TestBase
     {
-        [Fact(DisplayName = "Should Update")]
+        [Fact(DisplayName = "Should Update Elements")]
         public void ShouldUpdate()
         {
             var graphic = new Graphic { Title = "title1" };
@@ -40,7 +40,7 @@ namespace SimpleInMemoryDatabase.Lib.Tests.TableTests
         }
 
 
-        [Fact]
+        [Fact(DisplayName = "Should Update Multiple Elements")]
         public void ShouldUpdateMultipleItens()
         {
             var graphic1 = new Graphic { Title = "title1" };
@@ -61,7 +61,7 @@ namespace SimpleInMemoryDatabase.Lib.Tests.TableTests
             Assert.Equal(graphic2.Title, Db.GetOne<Graphic>(graphic2.Id).Title);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should Update Element With Reference Secure")]
         public void ShouldUpdateWithRefereceSecure()
         {
             var graphic = new Graphic { Title = "title1" };
@@ -78,7 +78,7 @@ namespace SimpleInMemoryDatabase.Lib.Tests.TableTests
             Assert.NotEqual(graphic.Title, Db.GetOne<Graphic>(graphic.Id).Title);
         }
 
-        [Fact]
+        [Fact(DisplayName = "Should Update Multiple Elements With Reference secure")]
         public void ShouldUpdateMultipleItensWithRefereceSecure()
         {
             var graphic1 = new Graphic { Title = "title1" };

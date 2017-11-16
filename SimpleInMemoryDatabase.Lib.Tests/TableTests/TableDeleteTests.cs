@@ -7,7 +7,7 @@ namespace SimpleInMemoryDatabase.Lib.Tests.TableTests
 {
     public class TableDeleteTests : TestBase
     {
-        [Fact]
+        [Fact(DisplayName = "Should Delete All Elements From Table")]
         public void ShouldDeleteAll()
         {
             var traj1 = new Trajectory();

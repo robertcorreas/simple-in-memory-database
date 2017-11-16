@@ -42,7 +42,7 @@ namespace SimpleInMemoryDatabase.Lib.Tests.TableTests
             Assert.True(1 == Db.Count<Well>());
         }
 
-        [Fact(DisplayName = "Should insert if update")]
+        [Fact(DisplayName = "Should Insert If Update")]
         public void ShouldInsertOrUpdate()
         {
             var well = new Well(new Geometry(), new Trajectory());

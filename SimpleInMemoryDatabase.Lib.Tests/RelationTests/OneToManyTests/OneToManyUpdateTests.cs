@@ -7,7 +7,7 @@ namespace SimpleInMemoryDatabase.Lib.Tests.RelationTests.OneToManyTests
 {
     public class OneToManyUpdateTests : TestBase
     {
-        [Fact(DisplayName = "Update if Fk Satisfy (OneToMany)")]
+        [Fact(DisplayName = "Update If Fk Satisfy (OneToMany)")]
         public void ShouldUpdateIfFkSatisfy()
         {
             Db.CreateOneToMany<Trajectory,TrajectoryPoint>(tp => tp.Trajectory.Id);
